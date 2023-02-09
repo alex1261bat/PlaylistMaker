@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_padding_start_end">16dp</dimen>
+    <dimen name="button_corner_radius">16dp</dimen>
+    <dimen name="button_margin_top">16dp</dimen>
+    <dimen name="icon_margin_to_text">12dp</dimen>
+    <dimen name="main_text_size">24sp</dimen>
+    <dimen name="settings_padding_start_end">16dp</dimen>
+    <dimen name="settings_padding_top_bottom">24dp</dimen>
+    <dimen name="settings_text_size">16sp</dimen>
+</resources>
