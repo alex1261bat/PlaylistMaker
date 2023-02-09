@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingHorizontal="@dimen/main_activity_padding_start_end"
     android:background="@color/background">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:layout_marginStart="16dp"
+
         android:layout_marginTop="14dp"
         android:textSize="@dimen/main_text_size"
         android:textColor="@color/white"/>
@@ -20,8 +21,6 @@
         android:id="@+id/button_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/button_margin_start"
-        android:layout_marginEnd="@dimen/button_margin_end"
         android:layout_marginTop="40dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
@@ -42,8 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginStart="@dimen/button_margin_start"
-        android:layout_marginEnd="@dimen/button_margin_end"
         android:layout_marginTop="@dimen/button_margin_top"
         android:backgroundTint="@color/white"
         app:cornerRadius="@dimen/button_corner_radius"
@@ -63,8 +60,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginStart="@dimen/button_margin_start"
-        android:layout_marginEnd="@dimen/button_margin_end"
         android:layout_marginTop="@dimen/button_margin_top"
         android:layout_marginBottom="28dp"
         android:backgroundTint="@color/white"
