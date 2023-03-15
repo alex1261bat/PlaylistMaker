@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:text="@string/media"
         android:textSize="@dimen/main_text_size"
-        android:textColor="@color/button_icon_text"
+        android:textColor="@color/yp_black"
         android:layout_gravity="center" />
 </LinearLayout>
