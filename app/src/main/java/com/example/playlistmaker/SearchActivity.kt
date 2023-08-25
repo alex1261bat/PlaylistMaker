@@ -9,13 +9,17 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
+    private var text = ""
+    companion object {
+        const val SEARCH_TEXT = "SEARCH_TEXT"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         val backButton = findViewById<androidx.appcompat.widget.Toolbar>(R.id.search_back_button)
-        val searchEditText = findViewById<EditText>(R.id.searchEditText)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        val searchEditText = findViewById<EditText>(R.id.searchEditText)
 
         backButton.setOnClickListener {
             finish()
@@ -48,6 +52,15 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchEditText.addTextChangedListener(searchTextWatcher)
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_TEXT, text)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        text = savedInstanceState.getString(SEARCH_TEXT,"")
     }
 }
