@@ -46,4 +46,8 @@
         <item name="colorControlActivated">@color/yp_blue</item>
     </style>
 
+    <style name="SearchEditTextStyle">
+        <item name="android:textColorHint">@color/yp_black</item>
+    </style>
+
 </resources>

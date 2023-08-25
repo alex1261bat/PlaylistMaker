@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="MainActivityLayout">
         <item name="android:background">@color/yp_blue</item>
     </style>
@@ -41,6 +41,10 @@
     
     <style name="SettingsSwitchStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/yp_blue</item>
+    </style>
+
+    <style name="SearchEditTextStyle">
+        <item name="android:textColorHint">@color/yp_grey</item>
     </style>
 
 </resources>
