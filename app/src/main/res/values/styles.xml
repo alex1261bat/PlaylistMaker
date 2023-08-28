@@ -4,10 +4,7 @@
         <item name="android:background">@color/yp_blue</item>
     </style>
 
-    <style name="MainActivityButtonStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
+    <style name="MainActivityButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/yp_white</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
         <item name="iconGravity">textStart</item>

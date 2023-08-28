@@ -1,16 +1,20 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
-    private var text = ""
-    companion object {
+    private lateinit var searchEditText: EditText
+    private var savedText = ""
+
+    private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +23,7 @@ class SearchActivity : AppCompatActivity() {
 
         val backButton = findViewById<androidx.appcompat.widget.Toolbar>(R.id.search_back_button)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
-        val searchEditText = findViewById<EditText>(R.id.searchEditText)
+        searchEditText = findViewById(R.id.searchEditText)
 
         backButton.setOnClickListener {
             finish()
@@ -27,6 +31,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             searchEditText.setText("")
+            hideKeyBoard()
         }
 
         fun clearButtonVisibility(s: CharSequence?): Int {
@@ -44,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                savedText = searchEditText.text.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -56,11 +62,21 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, text)
+        outState.putString(SEARCH_TEXT, savedText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        text = savedInstanceState.getString(SEARCH_TEXT,"")
+        savedText = savedInstanceState.getString(SEARCH_TEXT, "")
+        searchEditText.setText(savedText)
+    }
+
+    private fun hideKeyBoard() {
+        val view = this.currentFocus
+
+        if (view != null) {
+            val hide = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hide.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

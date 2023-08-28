@@ -72,4 +72,5 @@
             style="@style/SettingsIconStyle"
             android:src="@drawable/arrow_right" />
     </FrameLayout>
+
 </LinearLayout>

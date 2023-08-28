@@ -20,6 +20,9 @@
     <Button
         android:id="@+id/button_search"
         style="@style/MainActivityButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="40dp"
         app:icon="@drawable/search"
         android:text="@string/search" />
@@ -27,12 +30,18 @@
     <Button
         android:id="@+id/button_media"
         style="@style/MainActivityButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:icon="@drawable/media"
         android:text="@string/media" />
 
     <Button
         android:id="@+id/button_settings"
         style="@style/MainActivityButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginBottom="28dp"
         app:icon="@drawable/settings"
         android:text="@string/settings" />
