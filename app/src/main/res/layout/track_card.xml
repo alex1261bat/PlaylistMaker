@@ -3,7 +3,6 @@
     android:id="@+id/track_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/recycler_view_padding_start_end"
     android:orientation="horizontal">
 
     <ImageView
