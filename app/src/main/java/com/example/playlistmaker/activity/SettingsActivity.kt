@@ -1,20 +1,23 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.activity
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val backButton = findViewById<androidx.appcompat.widget.Toolbar>(R.id.settings_back_button)
-        val shareButton = findViewById<FrameLayout>(R.id.share_button)
-        val supportButton = findViewById<FrameLayout>(R.id.sendToSupport_button)
-        val userAgreementButton = findViewById<FrameLayout>(R.id.userAgreement_button)
+        val backButton = binding.settingsBackButton
+        val shareButton = binding.shareButton
+        val supportButton = binding.sendToSupportButton
+        val userAgreementButton = binding.userAgreementButton
 
         backButton.setOnClickListener {
             finish()

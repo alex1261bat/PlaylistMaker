@@ -50,4 +50,17 @@
         <item name="android:textColorHint">@color/yp_black</item>
     </style>
 
+    <style name="TrackTextStyle">
+        <item name="android:textColor">@color/yp_white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TrackTitleTextStyle">
+        <item name="android:textColor">@color/yp_white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>
