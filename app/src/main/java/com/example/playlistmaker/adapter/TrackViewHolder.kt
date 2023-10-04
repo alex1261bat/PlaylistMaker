@@ -20,11 +20,15 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .load(track.artworkUrl100)
             .placeholder(R.drawable.track_image_placeholder)
             .centerCrop()
-            .transform(RoundedCorners(8))
+            .transform(RoundedCorners(ROUNDING_RADIUS))
             .into(trackImage)
 
         trackTitle.text = track.trackName
         trackOwnerName.text = track.artistName
         trackTime.text = track.trackTime
+    }
+
+    companion object {
+        private const val ROUNDING_RADIUS : Int = 8
     }
 }
