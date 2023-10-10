@@ -16,4 +16,6 @@
     <dimen name="track_title_text_size">16sp</dimen>
     <dimen name="track_owner_time_size">11sp</dimen>
     <dimen name="dot_margin_start_end">5dp</dimen>
+    <dimen name="search_placeholder_text">19sp</dimen>
+    <dimen name="search_placeholder_margin_top">56dp</dimen>
 </resources>

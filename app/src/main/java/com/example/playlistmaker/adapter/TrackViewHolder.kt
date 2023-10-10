@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.model.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackImage = itemView.findViewById<ImageView>(R.id.track_image)
@@ -16,6 +18,8 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackTime = itemView.findViewById<TextView>(R.id.track_time)
 
     fun bind(track: Track) {
+        trackImage.setImageResource(R.drawable.track_image_placeholder)
+
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.track_image_placeholder)
@@ -25,7 +29,8 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         trackTitle.text = track.trackName
         trackOwnerName.text = track.artistName
-        trackTime.text = track.trackTime
+        trackTime.text = SimpleDateFormat(
+            "mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
     }
 
     companion object {
