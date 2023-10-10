@@ -7,7 +7,7 @@
     android:paddingHorizontal="@dimen/main_activity_padding_start_end">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/search_back_button"
+        android:id="@+id/searchBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-16dp"
@@ -31,13 +31,16 @@
             style="@style/SearchEditTextStyle"
             android:id="@+id/searchEditText"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/search_input_line"
             android:layout_weight="1"
+            android:layout_marginStart="2dp"
             android:hint="@string/search"
             android:inputType="text"
             android:maxLines="1"
             android:background="@android:color/transparent"
-            android:textColor="@color/yp_black" />
+            android:textColor="@color/yp_black"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -48,11 +51,56 @@
             android:visibility="gone" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/nothingFound"
+        style="@style/SearchPlaceholderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/search_placeholder_margin_top"
+        android:text="@string/nothing_found"
+        android:textSize="@dimen/search_placeholder_text"
+        app:drawableTopCompat="@drawable/nothing_found"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/connectionError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/search_placeholder_margin_top"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/connection_error"
+            android:layout_gravity="center"/>
+
+        <TextView
+            style="@style/SearchPlaceholderTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:text="@string/connection_error"
+            android:lines="4"
+            android:textSize="@dimen/search_placeholder_text"/>
+
+        <ImageView
+            android:id="@+id/updateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:src="@drawable/button_update"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/track_recycler_view"
+        android:id="@+id/trackRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layoutManager="LinearLayoutManager"
         android:layout_marginTop="@dimen/margin_top" />
+
 </LinearLayout>
