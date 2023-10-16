@@ -5,8 +5,8 @@ import com.example.playlistmaker.activity.SEARCH_HISTORY
 import com.google.gson.Gson
 
 class SearchHistory(private val sharedPreferences: SharedPreferences) {
-    private val trackHistoryList = mutableListOf<Track>()
     private val gson = Gson()
+    val trackHistoryList = mutableListOf<Track>()
 
     fun getHistoryList(): List<Track> {
         trackHistoryList.clear()

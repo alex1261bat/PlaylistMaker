@@ -104,9 +104,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             searchEditText.setText("")
             hideKeyBoard()
             trackList.clear()
+            searchHistory.trackHistoryList.clear()
             nothingFoundPlaceholder.visibility = View.GONE
             connectionErrorPlaceholder.visibility = View.GONE
+            youSearched.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            historyAdapter.notifyDataSetChanged()
             trackAdapter.notifyDataSetChanged()
+            trackRecyclerView.adapter = trackAdapter
         }
 
         updateButton.setOnClickListener {
