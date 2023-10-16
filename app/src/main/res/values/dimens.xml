@@ -19,4 +19,7 @@
     <dimen name="search_placeholder_text">19sp</dimen>
     <dimen name="search_placeholder_margin_top">56dp</dimen>
     <dimen name="search_input_line">36dp</dimen>
+    <dimen name="text_you_searched">52dp</dimen>
+    <dimen name="you_searched_text_margin_top">14dp</dimen>
+    <dimen name="clear_history_margin_bottom">364dp</dimen>
 </resources>

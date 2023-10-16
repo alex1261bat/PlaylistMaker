@@ -94,13 +94,33 @@
             android:src="@drawable/button_update"
             android:layout_gravity="center"/>
     </LinearLayout>
+    
+    <TextView
+        style="@style/SearchPlaceholderTextYouSearchedStyle"
+        android:id="@+id/youSearched"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/you_searched_text_margin_top"
+        android:layout_height="@dimen/text_you_searched"
+        android:text="@string/you_searched"
+        android:textSize="@dimen/search_placeholder_text"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         app:layoutManager="LinearLayoutManager"
         android:layout_marginTop="@dimen/margin_top" />
 
+    <ImageView
+        android:id="@+id/clearHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/settings_padding_top_bottom"
+        android:layout_marginBottom="@dimen/clear_history_margin_bottom"
+        android:src="@drawable/clear_history_button"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 </LinearLayout>

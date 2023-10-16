@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.databinding.ActivityMainBinding
 
+const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+const val DARK_THEME_KEY = "dark_theme"
+const val SEARCH_HISTORY = "search_history"
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
