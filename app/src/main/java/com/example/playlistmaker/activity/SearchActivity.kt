@@ -80,6 +80,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                     trackRecyclerView.adapter = historyAdapter
                     youSearched.visibility = View.VISIBLE
                     clearHistoryButton.visibility = View.VISIBLE
+                    hideKeyBoard()
                 } else {
                     youSearched.visibility = View.GONE
                     clearHistoryButton.visibility = View.GONE
@@ -141,6 +142,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                         trackRecyclerView.adapter = historyAdapter
                         youSearched.visibility = View.VISIBLE
                         clearHistoryButton.visibility = View.VISIBLE
+                        hideKeyBoard()
                     } else {
                         youSearched.visibility = View.GONE
                         clearHistoryButton.visibility = View.GONE

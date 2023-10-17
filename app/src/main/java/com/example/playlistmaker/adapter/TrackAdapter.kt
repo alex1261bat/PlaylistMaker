@@ -26,7 +26,7 @@ class TrackAdapter(private val data: List<Track>, private val listener: Listener
 
     override fun getItemCount() = data.size
 
-    interface Listener {
+    fun interface Listener {
         fun onClick(track: Track)
     }
 }

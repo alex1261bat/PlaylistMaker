@@ -11,7 +11,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     fun getHistoryList(): List<Track> {
         trackHistoryList.clear()
 
-        if (sharedPreferences.getString(SEARCH_HISTORY, "") != "") {
+        if (sharedPreferences.getString(SEARCH_HISTORY, "")?.isNotEmpty() == true) {
             trackHistoryList.addAll(gson.fromJson(
                 sharedPreferences.getString(SEARCH_HISTORY, ""),
                 Array<Track>::class.java
@@ -42,10 +42,9 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     private fun checkTrack(track: Track) {
         if (trackHistoryList.contains(track)) {
             trackHistoryList.remove(track)
-            trackHistoryList.add(0, track)
-        } else {
-            trackHistoryList.add(0, track)
         }
+
+        trackHistoryList.add(0, track)
     }
 
     private fun saveHistoryPrefs() {
