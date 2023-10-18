@@ -105,6 +105,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             hideKeyBoard()
             nothingFoundPlaceholder.visibility = View.GONE
             connectionErrorPlaceholder.visibility = View.GONE
+            trackList.clear()
+            trackAdapter.notifyDataSetChanged()
         }
 
         updateButton.setOnClickListener {
