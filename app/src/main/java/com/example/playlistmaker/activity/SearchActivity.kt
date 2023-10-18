@@ -75,16 +75,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         }
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (trackList.isNotEmpty() && searchHistory.getHistoryList().isNotEmpty()) {
-                if (hasFocus && searchEditText.text.isEmpty()) {
-                    trackRecyclerView.adapter = historyAdapter
-                    youSearched.visibility = View.VISIBLE
-                    clearHistoryButton.visibility = View.VISIBLE
-                    hideKeyBoard()
-                } else {
-                    youSearched.visibility = View.GONE
-                    clearHistoryButton.visibility = View.GONE
-                }
+            if (searchHistory.getHistoryList().isNotEmpty() && hasFocus
+                && searchEditText.text.isEmpty()) {
+                trackRecyclerView.adapter = historyAdapter
+                youSearched.visibility = View.VISIBLE
+                clearHistoryButton.visibility = View.VISIBLE
+                hideKeyBoard()
+            } else {
+                youSearched.visibility = View.GONE
+                clearHistoryButton.visibility = View.GONE
             }
         }
         
@@ -104,15 +103,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         clearButton.setOnClickListener {
             searchEditText.setText("")
             hideKeyBoard()
-            trackList.clear()
-            searchHistory.trackHistoryList.clear()
             nothingFoundPlaceholder.visibility = View.GONE
             connectionErrorPlaceholder.visibility = View.GONE
-            youSearched.visibility = View.GONE
-            clearHistoryButton.visibility = View.GONE
-            historyAdapter.notifyDataSetChanged()
-            trackAdapter.notifyDataSetChanged()
-            trackRecyclerView.adapter = trackAdapter
         }
 
         updateButton.setOnClickListener {
@@ -136,17 +128,17 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 savedText = searchEditText.text.toString()
+                trackRecyclerView.adapter = trackAdapter
 
-                if (trackList.isNotEmpty() && searchHistory.getHistoryList().isNotEmpty()) {
-                    if (searchEditText.hasFocus() && s?.isEmpty() == true) {
-                        trackRecyclerView.adapter = historyAdapter
-                        youSearched.visibility = View.VISIBLE
-                        clearHistoryButton.visibility = View.VISIBLE
-                        hideKeyBoard()
-                    } else {
-                        youSearched.visibility = View.GONE
-                        clearHistoryButton.visibility = View.GONE
-                    }
+                if (searchHistory.getHistoryList().isNotEmpty()
+                    && searchEditText.hasFocus() && s?.isEmpty() == true) {
+                    trackRecyclerView.adapter = historyAdapter
+                    youSearched.visibility = View.VISIBLE
+                    clearHistoryButton.visibility = View.VISIBLE
+                    hideKeyBoard()
+                } else {
+                    youSearched.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
                 }
             }
 

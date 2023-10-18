@@ -6,7 +6,7 @@ import com.google.gson.Gson
 
 class SearchHistory(private val sharedPreferences: SharedPreferences) {
     private val gson = Gson()
-    val trackHistoryList = mutableListOf<Track>()
+    private val trackHistoryList = mutableListOf<Track>()
 
     fun getHistoryList(): List<Track> {
         trackHistoryList.clear()

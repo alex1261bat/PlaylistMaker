@@ -22,4 +22,5 @@
     <dimen name="text_you_searched">52dp</dimen>
     <dimen name="you_searched_text_margin_top">14dp</dimen>
     <dimen name="clear_history_margin_bottom">364dp</dimen>
+    <dimen name="artist_name_width">54dp</dimen>
 </resources>
