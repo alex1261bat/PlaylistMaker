@@ -15,21 +15,14 @@
         app:navigationIcon="@drawable/back_space"
         app:title="@string/settings" />
 
-    <FrameLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/SettingsTextStyle"
+        android:id="@+id/themeSwitcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
-
-        <TextView
-            style="@style/SettingsTextStyle"
-            android:text="@string/dark_theme" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:theme="@style/SettingsSwitchStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end" />
-    </FrameLayout>
+        android:text="@string/dark_theme"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/settings_padding_top_bottom" />
 
     <FrameLayout
         android:id="@+id/shareButton"

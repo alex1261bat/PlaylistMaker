@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.model.App
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
@@ -18,6 +19,17 @@ class SettingsActivity : AppCompatActivity() {
         val shareButton = binding.shareButton
         val supportButton = binding.sendToSupportButton
         val userAgreementButton = binding.userAgreementButton
+        val themeSwitcher = binding.themeSwitcher
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
+            sharedPrefs.edit()
+                .putString(DARK_THEME_KEY, checked.toString())
+                .apply()
+        }
 
         backButton.setOnClickListener {
             finish()
