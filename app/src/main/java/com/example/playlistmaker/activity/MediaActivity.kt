@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.activity.SearchActivity.Companion.TRACK_DATA
 import com.example.playlistmaker.adapter.TrackViewHolder
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 import com.example.playlistmaker.model.Track
@@ -52,7 +53,7 @@ class MediaActivity : AppCompatActivity() {
 
     private fun getTrack(): Track {
         val gson = Gson()
-        val trackData = intent.extras?.getString("trackData")
+        val trackData = intent.extras?.getString(TRACK_DATA)
 
         val track = if (trackData.isNullOrEmpty()) {
             Track("", "", "", "", "",

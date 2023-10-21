@@ -43,8 +43,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     private val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
 
-    private companion object {
+    companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val TRACK_DATA = "trackData"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -210,7 +211,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         val gson = Gson()
         val trackIntent = Intent(this, MediaActivity::class.java)
 
-        trackIntent.putExtra("trackData", gson.toJson(track))
+        trackIntent.putExtra(TRACK_DATA, gson.toJson(track))
         startActivity(trackIntent)
     }
 }
