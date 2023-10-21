@@ -23,4 +23,18 @@
     <dimen name="you_searched_text_margin_top">14dp</dimen>
     <dimen name="clear_history_margin_bottom">364dp</dimen>
     <dimen name="artist_name_width">54dp</dimen>
+    <dimen name="media_padding_horizontal">24dp</dimen>
+    <dimen name="media_player_image">312dp</dimen>
+    <dimen name="media_text_width">312dp</dimen>
+    <dimen name="media_track_name_top_margin">20dp</dimen>
+    <dimen name="media_track_image_margin_top">16dp</dimen>
+    <dimen name="media_track_name_text_size_22sp">22sp</dimen>
+    <dimen name="media_text_height_28dp">28dp</dimen>
+    <dimen name="media_small_text_height_16dp">16dp</dimen>
+    <dimen name="media_margin_top_24dp">24dp</dimen>
+    <dimen name="media_margin_top_8dp">8dp</dimen>
+    <dimen name="media_margin_top_48dp">48dp</dimen>
+    <dimen name="media_text_size_14sp">14sp</dimen>
+    <dimen name="media_timer_width_100dp">100dp</dimen>
+    <dimen name="media_text_size_13sp">13sp</dimen>
 </resources>

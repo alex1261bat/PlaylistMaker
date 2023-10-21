@@ -82,4 +82,18 @@
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="MediaMainTextStyle">
+        <item name="android:textColor">@color/yp_white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="MediaMainTrackTextStyle">
+        <item name="android:textColor">@color/yp_white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>
