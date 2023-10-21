@@ -34,6 +34,6 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     companion object {
-        internal const val ROUNDING_RADIUS : Int = 8
+        private const val ROUNDING_RADIUS : Int = 8
     }
 }
