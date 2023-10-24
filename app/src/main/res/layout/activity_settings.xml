@@ -49,7 +49,7 @@
 
         <ImageView
             style="@style/SettingsIconStyle"
-           android:src="@drawable/support" />
+            android:src="@drawable/support" />
     </FrameLayout>
 
     <FrameLayout

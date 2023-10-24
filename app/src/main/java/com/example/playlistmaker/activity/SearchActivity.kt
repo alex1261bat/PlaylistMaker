@@ -1,6 +1,7 @@
 package com.example.playlistmaker.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.model.SearchHistory
 import com.example.playlistmaker.model.Track
 import com.example.playlistmaker.model.TrackResponse
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,8 +43,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     private val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
 
-    private companion object {
+    companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val TRACK_DATA = "trackData"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -204,5 +207,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     override fun onClick(track: Track) {
         searchHistory.addTrackToHistory(track)
+
+        val gson = Gson()
+        val trackIntent = Intent(this, MediaActivity::class.java)
+
+        trackIntent.putExtra(TRACK_DATA, gson.toJson(track))
+        startActivity(trackIntent)
     }
 }

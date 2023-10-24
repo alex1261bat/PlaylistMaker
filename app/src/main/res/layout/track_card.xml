@@ -56,7 +56,7 @@
                 style="@style/TrackTextStyle"
                 android:layout_width="@dimen/artist_name_width"
                 android:layout_height="wrap_content"
-                tools:text="5:45"
+                tools:text="[5:45]"
                 android:textSize="@dimen/track_owner_time_size"/>
         </LinearLayout>
     </LinearLayout>
