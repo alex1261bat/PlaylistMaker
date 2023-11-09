@@ -37,4 +37,6 @@
     <dimen name="media_text_size_14sp">14sp</dimen>
     <dimen name="media_timer_width_100dp">100dp</dimen>
     <dimen name="media_text_size_13sp">13sp</dimen>
+    <dimen name="progress_bar_margin_top_140dp">140dp</dimen>
+    <dimen name="progress_bar_size_44dp">44dp</dimen>
 </resources>

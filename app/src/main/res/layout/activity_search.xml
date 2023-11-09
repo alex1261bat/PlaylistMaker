@@ -105,6 +105,14 @@
         android:textSize="@dimen/search_placeholder_text"
         android:visibility="gone"/>
 
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_size_44dp"
+        android:layout_height="@dimen/progress_bar_size_44dp"
+        android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/purple_500"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackRecyclerView"
         android:layout_width="match_parent"
