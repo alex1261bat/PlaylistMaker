@@ -85,7 +85,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
         searchEditText?.setOnFocusChangeListener { _, hasFocus ->
             if (searchHistory!!.getHistoryList().isNotEmpty() && hasFocus
-                && searchEditText!!.text.isEmpty()) {
+                && searchEditText!!.text.isBlank()) {
                 trackRecyclerView?.adapter = historyAdapter
                 youSearched?.visibility = View.VISIBLE
                 clearHistoryButton?.visibility = View.VISIBLE
@@ -98,9 +98,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         
         searchEditText?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (searchEditText!!.text.isNotEmpty()) {
-                    findTrack(searchEditText!!.text.toString())
-                }
+                findTrack(searchEditText!!.text.toString())
             }
             false
         }
@@ -149,9 +147,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                 savedText = searchEditText?.text.toString()
                 trackRecyclerView?.adapter = trackAdapter
 
-                if (searchEditText?.text.toString().isNotBlank()) {
-                    searchDebounce()
-                }
+                searchDebounce()
 
                 if (searchEditText?.text.toString().isBlank()) {
                     connectionErrorPlaceholder?.visibility = View.GONE
@@ -201,50 +197,52 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private fun findTrack(searchText: String) {
         trackList.clear()
         trackAdapter?.notifyDataSetChanged()
-        connectionErrorPlaceholder?.visibility = View.GONE
 
-        progressBar = binding?.progressBar
-        progressBar?.visibility = View.VISIBLE
+        if(searchText.isNotBlank()) {
+            connectionErrorPlaceholder?.visibility = View.GONE
+            progressBar = binding?.progressBar
+            progressBar?.visibility = View.VISIBLE
 
-        iTunesService.search(searchText)
-            .enqueue(object : Callback<TrackResponse> {
+            iTunesService.search(searchText)
+                .enqueue(object : Callback<TrackResponse> {
 
-                override fun onResponse(call: Call<TrackResponse>,
-                                        response: Response<TrackResponse>) {
-                    progressBar?.visibility = View.GONE
+                    override fun onResponse(call: Call<TrackResponse>,
+                                            response: Response<TrackResponse>) {
+                        progressBar?.visibility = View.GONE
 
-                    if (response.code() == 200) {
-                        trackList.clear()
-                        nothingFoundPlaceholder?.visibility = View.GONE
+                        if (response.code() == 200) {
+                            trackList.clear()
+                            nothingFoundPlaceholder?.visibility = View.GONE
 
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            trackList.addAll(response.body()?.results!!)
-                            trackAdapter?.notifyDataSetChanged()
-                        }
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                trackList.addAll(response.body()?.results!!)
+                                trackAdapter?.notifyDataSetChanged()
+                            }
 
-                        if (trackList.isEmpty()) {
+                            if (trackList.isEmpty()) {
+                                nothingFoundPlaceholder?.visibility = View.VISIBLE
+                            }
+
+                        } else {
+                            /*
+                            При запросе на некоторые буквы или сочетания букв от сервера приходит
+                            код ответа 404 и пустое тело ответа, поэтому и появляется плейсхолдер ошибки.
+                            В коде оставил вывод на печать код ответа и тело, чтобы можно было проверить.
+                            Заменил плейсхолдер на более подходящий
+                            */
+                            println(response.code())
+                            println(response.body())
                             nothingFoundPlaceholder?.visibility = View.VISIBLE
                         }
-
-                    } else {
-                        /*
-                        При запросе на некоторые буквы или сочетания букв от сервера приходит
-                        код ответа 404 и пустое тело ответа, поэтому и появляется плейсхолдер ошибки.
-                        В коде оставил вывод на печать код ответа и тело, чтобы можно было проверить.
-                        Заменил плейсхолдер на более подходящий
-                        */
-                        println(response.code())
-                        println(response.body())
-                        nothingFoundPlaceholder?.visibility = View.VISIBLE
                     }
-                }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    progressBar?.visibility = View.GONE
-                    connectionErrorPlaceholder?.visibility = View.VISIBLE
-                }
-            })
-        hideKeyBoard()
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                        progressBar?.visibility = View.GONE
+                        connectionErrorPlaceholder?.visibility = View.VISIBLE
+                    }
+                })
+            hideKeyBoard()
+        }
     }
 
     override fun onClick(track: Track) {
