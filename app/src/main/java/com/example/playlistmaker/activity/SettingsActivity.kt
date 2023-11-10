@@ -15,13 +15,8 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        val backButton = binding?.settingsBackButton
-        val shareButton = binding?.shareButton
-        val supportButton = binding?.sendToSupportButton
-        val userAgreementButton = binding?.userAgreementButton
-        val themeSwitcher = binding?.themeSwitcher
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
-
+        val themeSwitcher = binding?.themeSwitcher
         themeSwitcher?.isChecked = (applicationContext as App).darkTheme
 
         themeSwitcher?.setOnCheckedChangeListener { _, checked ->
@@ -31,9 +26,13 @@ class SettingsActivity : AppCompatActivity() {
                 .apply()
         }
 
+        val backButton = binding?.settingsBackButton
+
         backButton?.setOnClickListener {
             finish()
         }
+
+        val shareButton = binding?.shareButton
 
         shareButton?.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -41,6 +40,8 @@ class SettingsActivity : AppCompatActivity() {
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message))
             startActivity(Intent.createChooser(shareIntent, null))
         }
+
+        val supportButton = binding?.sendToSupportButton
 
         supportButton?.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
@@ -50,6 +51,8 @@ class SettingsActivity : AppCompatActivity() {
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_theme))
             startActivity(supportIntent)
         }
+
+        val userAgreementButton = binding?.userAgreementButton
 
         userAgreementButton?.setOnClickListener {
             val userAgreementIntent = Intent(Intent.ACTION_VIEW)

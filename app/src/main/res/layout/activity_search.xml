@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="@dimen/search_height_52dp"
         android:background="@drawable/search_linearlayout_round_corners"
         android:orientation="horizontal">
 

@@ -67,15 +67,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         historyAdapter = TrackAdapter(searchHistory!!.getHistoryList(), this)
         val trackRecyclerView = binding?.trackRecyclerView
         trackRecyclerView?.adapter = trackAdapter
-        val backButton = binding?.searchBackButton
-        val clearButton = binding?.clearIcon
-        searchEditText = binding?.searchEditText
-        nothingFoundPlaceholder = binding?.nothingFound
-        connectionErrorPlaceholder = binding?.connectionError
-        val updateButton = binding?.updateButton
         val clearHistoryButton = binding?.clearHistoryButton
         val youSearched = binding?.youSearched
-        progressBar = binding?.progressBar
 
         clearHistoryButton?.setOnClickListener {
             searchHistory?.clearHistory()
@@ -86,6 +79,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             trackAdapter?.notifyDataSetChanged()
             trackRecyclerView?.adapter = trackAdapter
         }
+
+        searchEditText = binding?.searchEditText
 
         searchEditText?.setOnFocusChangeListener { _, hasFocus ->
             if (searchHistory!!.getHistoryList().isNotEmpty() && hasFocus
@@ -109,9 +104,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             false
         }
 
+        val backButton = binding?.searchBackButton
+
         backButton?.setOnClickListener {
             finish()
         }
+
+        val clearButton = binding?.clearIcon
+        nothingFoundPlaceholder = binding?.nothingFound
+        connectionErrorPlaceholder = binding?.connectionError
 
         clearButton?.setOnClickListener {
             searchEditText?.setText("")
@@ -121,6 +122,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             trackList.clear()
             trackAdapter?.notifyDataSetChanged()
         }
+
+        val updateButton = binding?.updateButton
 
         updateButton?.setOnClickListener {
             findTrack(searchEditText?.text.toString())
@@ -145,10 +148,12 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                 savedText = searchEditText?.text.toString()
                 trackRecyclerView?.adapter = trackAdapter
 
-                if (searchEditText?.text.toString().isNotEmpty()) {
-                    val searchRunnable = Runnable { findTrack(searchEditText?.text.toString()) }
-                    handler.removeCallbacks(searchRunnable)
-                    handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+                if (searchEditText?.text.toString().isNotBlank()) {
+                    searchDebounce(searchEditText?.text.toString())
+                }
+
+                if (searchEditText?.text.toString().isBlank()) {
+                    connectionErrorPlaceholder?.visibility = View.GONE
                 }
 
                 if (searchHistory!!.getHistoryList().isNotEmpty()
@@ -192,6 +197,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     }
 
     private fun findTrack(searchText: String) {
+        trackList.clear()
+        trackAdapter?.notifyDataSetChanged()
+        connectionErrorPlaceholder?.visibility = View.GONE
+
+        progressBar = binding?.progressBar
         progressBar?.visibility = View.VISIBLE
 
         iTunesService.search(searchText)
@@ -215,6 +225,13 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                         }
 
                     } else {
+                        /*
+                        При запросе на некоторые буквы или сочетания букв от сервера приходит
+                        код ответа 404 и пустое тело ответа, поэтому и появляется плейсхолдер ошибки.
+                        В коде оставил вывод на печать код ответа и тело, чтобы можно было проверить.
+                        */
+                        println(response.code())
+                        println(response.body())
                         connectionErrorPlaceholder?.visibility = View.VISIBLE
                     }
                 }
@@ -224,6 +241,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                     connectionErrorPlaceholder?.visibility = View.VISIBLE
                 }
             })
+        hideKeyBoard()
     }
 
     override fun onClick(track: Track) {
@@ -239,12 +257,18 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         }
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
+
         if (isClickAllowed) {
             isClickAllowed = false
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
+    }
+
+    private fun searchDebounce(searchText: String) {
+        handler.removeCallbacks { findTrack(searchText) }
+        handler.postDelayed({ findTrack(searchText) }, SEARCH_DEBOUNCE_DELAY)
     }
 }
