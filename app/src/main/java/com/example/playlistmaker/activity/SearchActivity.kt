@@ -199,6 +199,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         trackAdapter?.notifyDataSetChanged()
 
         if(searchText.isNotBlank()) {
+            nothingFoundPlaceholder?.visibility = View.GONE
             connectionErrorPlaceholder?.visibility = View.GONE
             progressBar = binding?.progressBar
             progressBar?.visibility = View.VISIBLE
