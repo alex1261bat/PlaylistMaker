@@ -154,6 +154,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
                 if (searchEditText?.text.toString().isBlank()) {
                     connectionErrorPlaceholder?.visibility = View.GONE
+                    nothingFoundPlaceholder?.visibility = View.GONE
                 }
 
                 if (searchHistory!!.getHistoryList().isNotEmpty()
@@ -229,10 +230,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                         При запросе на некоторые буквы или сочетания букв от сервера приходит
                         код ответа 404 и пустое тело ответа, поэтому и появляется плейсхолдер ошибки.
                         В коде оставил вывод на печать код ответа и тело, чтобы можно было проверить.
+                        Заменил плейсхолдер на более подходящий
                         */
                         println(response.code())
                         println(response.body())
-                        connectionErrorPlaceholder?.visibility = View.VISIBLE
+                        nothingFoundPlaceholder?.visibility = View.VISIBLE
                     }
                 }
 
