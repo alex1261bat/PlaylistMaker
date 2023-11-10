@@ -42,6 +42,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private var progressBar: ProgressBar? = null
+    private var searchRunnable = Runnable { findTrack(searchEditText?.text.toString()) }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
@@ -149,7 +150,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                 trackRecyclerView?.adapter = trackAdapter
 
                 if (searchEditText?.text.toString().isNotBlank()) {
-                    searchDebounce(searchEditText?.text.toString())
+                    searchDebounce()
                 }
 
                 if (searchEditText?.text.toString().isBlank()) {
@@ -269,8 +270,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         return current
     }
 
-    private fun searchDebounce(searchText: String) {
-        handler.removeCallbacks { findTrack(searchText) }
-        handler.postDelayed({ findTrack(searchText) }, SEARCH_DEBOUNCE_DELAY)
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 }
