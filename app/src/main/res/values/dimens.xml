@@ -21,7 +21,7 @@
     <dimen name="search_input_line">36dp</dimen>
     <dimen name="text_you_searched">52dp</dimen>
     <dimen name="you_searched_text_margin_top">14dp</dimen>
-    <dimen name="clear_history_margin_bottom">364dp</dimen>
+    <dimen name="clear_history_margin_bottom">240dp</dimen>
     <dimen name="artist_name_width">54dp</dimen>
     <dimen name="media_padding_horizontal">24dp</dimen>
     <dimen name="media_player_image">312dp</dimen>
@@ -39,4 +39,5 @@
     <dimen name="media_text_size_13sp">13sp</dimen>
     <dimen name="progress_bar_margin_top_140dp">140dp</dimen>
     <dimen name="progress_bar_size_44dp">44dp</dimen>
+    <dimen name="search_height_52dp">52dp</dimen>
 </resources>
