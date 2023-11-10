@@ -16,34 +16,27 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
-        val themeSwitcher = binding?.themeSwitcher
-        themeSwitcher?.isChecked = (applicationContext as App).darkTheme
+        binding?.themeSwitcher?.isChecked = (applicationContext as App).darkTheme
 
-        themeSwitcher?.setOnCheckedChangeListener { _, checked ->
+        binding?.themeSwitcher?.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
             sharedPrefs.edit()
                 .putString(DARK_THEME_KEY, checked.toString())
                 .apply()
         }
 
-        val backButton = binding?.settingsBackButton
-
-        backButton?.setOnClickListener {
+        binding?.settingsBackButton?.setOnClickListener {
             finish()
         }
 
-        val shareButton = binding?.shareButton
-
-        shareButton?.setOnClickListener {
+        binding?.shareButton?.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = getString(R.string.share_intent_type)
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message))
             startActivity(Intent.createChooser(shareIntent, null))
         }
 
-        val supportButton = binding?.sendToSupportButton
-
-        supportButton?.setOnClickListener {
+        binding?.sendToSupportButton?.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse(getString(R.string.mail_to))
             supportIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.email))
@@ -52,9 +45,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
 
-        val userAgreementButton = binding?.userAgreementButton
-
-        userAgreementButton?.setOnClickListener {
+        binding?.userAgreementButton?.setOnClickListener {
             val userAgreementIntent = Intent(Intent.ACTION_VIEW)
             userAgreementIntent.data = Uri.parse(getString(R.string.user_agreement_data))
             startActivity(userAgreementIntent)

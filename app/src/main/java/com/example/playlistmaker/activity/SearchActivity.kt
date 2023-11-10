@@ -10,10 +10,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.adapter.ITunesSearchAPI
 import com.example.playlistmaker.adapter.TrackAdapter
@@ -30,9 +26,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private var binding: ActivitySearchBinding? = null
-    private var searchEditText: EditText? = null
-    private var nothingFoundPlaceholder: TextView? = null
-    private var connectionErrorPlaceholder: LinearLayout? = null
     private var trackAdapter: TrackAdapter? = null
     private var historyAdapter: TrackAdapter? = null
     private var savedText = ""
@@ -41,8 +34,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private var searchHistory: SearchHistory? = null
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
-    private var progressBar: ProgressBar? = null
-    private val searchRunnable = Runnable { findTrack(searchEditText?.text.toString()) }
+    private val searchRunnable = Runnable { findTrack(binding?.searchEditText?.text.toString()) }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
@@ -66,69 +58,55 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         trackAdapter = TrackAdapter(trackList, this)
         searchHistory = SearchHistory(getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE))
         historyAdapter = TrackAdapter(searchHistory!!.getHistoryList(), this)
-        val trackRecyclerView = binding?.trackRecyclerView
-        trackRecyclerView?.adapter = trackAdapter
-        val clearHistoryButton = binding?.clearHistoryButton
-        val youSearched = binding?.youSearched
+        binding?.trackRecyclerView?.adapter = trackAdapter
 
-        clearHistoryButton?.setOnClickListener {
+        binding?.clearHistoryButton?.setOnClickListener {
             searchHistory?.clearHistory()
             trackList.clear()
-            youSearched?.visibility = View.GONE
-            clearHistoryButton.visibility = View.GONE
+            binding?.youSearched?.visibility = View.GONE
+            binding?.clearHistoryButton?.visibility = View.GONE
             historyAdapter?.notifyDataSetChanged()
             trackAdapter?.notifyDataSetChanged()
-            trackRecyclerView?.adapter = trackAdapter
+            binding?.trackRecyclerView?.adapter = trackAdapter
         }
 
-        searchEditText = binding?.searchEditText
 
-        searchEditText?.setOnFocusChangeListener { _, hasFocus ->
+        binding?.searchEditText?.setOnFocusChangeListener { _, hasFocus ->
             if (searchHistory!!.getHistoryList().isNotEmpty() && hasFocus
-                && searchEditText!!.text.isEmpty()) {
-                trackRecyclerView?.adapter = historyAdapter
-                youSearched?.visibility = View.VISIBLE
-                clearHistoryButton?.visibility = View.VISIBLE
+                && binding?.searchEditText!!.text.isBlank()) {
+                binding?.trackRecyclerView?.adapter = historyAdapter
+                binding?.youSearched?.visibility = View.VISIBLE
+                binding?.clearHistoryButton?.visibility = View.VISIBLE
                 hideKeyBoard()
             } else {
-                youSearched?.visibility = View.GONE
-                clearHistoryButton?.visibility = View.GONE
+                binding?.youSearched?.visibility = View.GONE
+                binding?.clearHistoryButton?.visibility = View.GONE
             }
         }
         
-        searchEditText?.setOnEditorActionListener { _, actionId, _ ->
+        binding?.searchEditText?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (searchEditText!!.text.isNotEmpty()) {
-                    findTrack(searchEditText!!.text.toString())
-                }
+                findTrack(binding?.searchEditText!!.text.toString())
             }
             false
         }
 
-        val backButton = binding?.searchBackButton
-
-        backButton?.setOnClickListener {
+            binding?.searchBackButton?.setOnClickListener {
             finish()
         }
 
-        val clearButton = binding?.clearIcon
-        nothingFoundPlaceholder = binding?.nothingFound
-        connectionErrorPlaceholder = binding?.connectionError
-
-        clearButton?.setOnClickListener {
-            searchEditText?.setText("")
+        binding?.clearIcon?.setOnClickListener {
+            binding?.searchEditText?.setText("")
             hideKeyBoard()
-            nothingFoundPlaceholder?.visibility = View.GONE
-            connectionErrorPlaceholder?.visibility = View.GONE
+            binding?.nothingFound?.visibility = View.GONE
+            binding?.connectionError?.visibility = View.GONE
             trackList.clear()
             trackAdapter?.notifyDataSetChanged()
         }
 
-        val updateButton = binding?.updateButton
-
-        updateButton?.setOnClickListener {
-            findTrack(searchEditText?.text.toString())
-            connectionErrorPlaceholder?.visibility = View.GONE
+        binding?.updateButton?.setOnClickListener {
+            findTrack(binding?.searchEditText?.text.toString())
+            binding?.connectionError?.visibility = View.GONE
         }
 
         fun clearButtonVisibility(s: CharSequence?): Int {
@@ -145,28 +123,26 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton?.visibility = clearButtonVisibility(s)
-                savedText = searchEditText?.text.toString()
-                trackRecyclerView?.adapter = trackAdapter
+                binding?.clearIcon?.visibility = clearButtonVisibility(s)
+                savedText = binding?.searchEditText?.text.toString()
+                binding?.trackRecyclerView?.adapter = trackAdapter
 
-                if (searchEditText?.text.toString().isNotBlank()) {
-                    searchDebounce()
-                }
+                searchDebounce()
 
-                if (searchEditText?.text.toString().isBlank()) {
-                    connectionErrorPlaceholder?.visibility = View.GONE
-                    nothingFoundPlaceholder?.visibility = View.GONE
+                if (binding?.searchEditText?.text.toString().isBlank()) {
+                    binding?.connectionError?.visibility = View.GONE
+                    binding?.nothingFound?.visibility = View.GONE
                 }
 
                 if (searchHistory!!.getHistoryList().isNotEmpty()
-                    && searchEditText!!.hasFocus() && s?.isEmpty() == true) {
-                    trackRecyclerView?.adapter = historyAdapter
-                    youSearched?.visibility = View.VISIBLE
-                    clearHistoryButton?.visibility = View.VISIBLE
+                    && binding?.searchEditText!!.hasFocus() && s?.isEmpty() == true) {
+                    binding?.trackRecyclerView?.adapter = historyAdapter
+                    binding?.youSearched?.visibility = View.VISIBLE
+                    binding?.clearHistoryButton?.visibility = View.VISIBLE
                     hideKeyBoard()
                 } else {
-                    youSearched?.visibility = View.GONE
-                    clearHistoryButton?.visibility = View.GONE
+                    binding?.youSearched?.visibility = View.GONE
+                    binding?.clearHistoryButton?.visibility = View.GONE
                 }
             }
 
@@ -175,7 +151,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             }
         }
 
-        searchEditText!!.addTextChangedListener(searchTextWatcher)
+        binding?.searchEditText!!.addTextChangedListener(searchTextWatcher)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -186,7 +162,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         savedText = savedInstanceState.getString(SEARCH_TEXT, "")
-        searchEditText?.setText(savedText)
+        binding?.searchEditText?.setText(savedText)
     }
 
     private fun hideKeyBoard() {
@@ -201,50 +177,44 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private fun findTrack(searchText: String) {
         trackList.clear()
         trackAdapter?.notifyDataSetChanged()
-        connectionErrorPlaceholder?.visibility = View.GONE
 
-        progressBar = binding?.progressBar
-        progressBar?.visibility = View.VISIBLE
+        if(searchText.isNotBlank()) {
+            binding?.nothingFound?.visibility = View.GONE
+            binding?.connectionError?.visibility = View.GONE
+            binding?.progressBar?.visibility = View.VISIBLE
 
-        iTunesService.search(searchText)
-            .enqueue(object : Callback<TrackResponse> {
+            iTunesService.search(searchText)
+                .enqueue(object : Callback<TrackResponse> {
 
-                override fun onResponse(call: Call<TrackResponse>,
-                                        response: Response<TrackResponse>) {
-                    progressBar?.visibility = View.GONE
+                    override fun onResponse(call: Call<TrackResponse>,
+                                            response: Response<TrackResponse>) {
+                        binding?.progressBar?.visibility = View.GONE
 
-                    if (response.code() == 200) {
-                        trackList.clear()
-                        nothingFoundPlaceholder?.visibility = View.GONE
+                        if (response.code() == 200) {
+                            trackList.clear()
+                            binding?.nothingFound?.visibility = View.GONE
 
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            trackList.addAll(response.body()?.results!!)
-                            trackAdapter?.notifyDataSetChanged()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                trackList.addAll(response.body()?.results!!)
+                                trackAdapter?.notifyDataSetChanged()
+                            }
+
+                            if (trackList.isEmpty()) {
+                                binding?.nothingFound?.visibility = View.VISIBLE
+                            }
+
+                        } else {
+                            binding?.nothingFound?.visibility = View.VISIBLE
                         }
-
-                        if (trackList.isEmpty()) {
-                            nothingFoundPlaceholder?.visibility = View.VISIBLE
-                        }
-
-                    } else {
-                        /*
-                        При запросе на некоторые буквы или сочетания букв от сервера приходит
-                        код ответа 404 и пустое тело ответа, поэтому и появляется плейсхолдер ошибки.
-                        В коде оставил вывод на печать код ответа и тело, чтобы можно было проверить.
-                        Заменил плейсхолдер на более подходящий
-                        */
-                        println(response.code())
-                        println(response.body())
-                        nothingFoundPlaceholder?.visibility = View.VISIBLE
                     }
-                }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    progressBar?.visibility = View.GONE
-                    connectionErrorPlaceholder?.visibility = View.VISIBLE
-                }
-            })
-        hideKeyBoard()
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                        binding?.progressBar?.visibility = View.GONE
+                        binding?.connectionError?.visibility = View.VISIBLE
+                    }
+                })
+            hideKeyBoard()
+        }
     }
 
     override fun onClick(track: Track) {
