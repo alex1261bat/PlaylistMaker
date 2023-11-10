@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="@dimen/search_height_52dp"
         android:background="@drawable/search_linearlayout_round_corners"
         android:orientation="horizontal">
 
@@ -103,6 +103,14 @@
         android:layout_height="@dimen/text_you_searched"
         android:text="@string/you_searched"
         android:textSize="@dimen/search_placeholder_text"
+        android:visibility="gone"/>
+
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_size_44dp"
+        android:layout_height="@dimen/progress_bar_size_44dp"
+        android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/purple_500"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

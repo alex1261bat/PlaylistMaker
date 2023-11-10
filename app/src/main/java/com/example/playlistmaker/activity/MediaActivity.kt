@@ -1,16 +1,20 @@
 package com.example.playlistmaker.activity
 
-import androidx.appcompat.app .AppCompatActivity
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.activity.SearchActivity.Companion.TRACK_DATA
 import com.example.playlistmaker.adapter.TrackViewHolder
 import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.model.MediaPlayerStatus
+import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PAUSED
+import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PLAYING
+import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PREPARED
 import com.example.playlistmaker.model.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
@@ -18,37 +22,38 @@ import java.util.Date
 import java.util.Locale
 
 class MediaActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMediaBinding
-    private lateinit var backButton: Toolbar
-    private lateinit var trackImage: ImageView
-    private lateinit var trackName: TextView
-    private lateinit var artistName: TextView
-    private lateinit var trackTime: TextView
-    private lateinit var trackAlbum: TextView
-    private lateinit var trackYear: TextView
-    private lateinit var trackGenre: TextView
-    private lateinit var trackCountry: TextView
+    private var binding: ActivityMediaBinding? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var mediaPlayer = MediaPlayer()
+    private lateinit var playerState: MediaPlayerStatus
+
+    companion object {
+        private const val TIMER_DELAY = 500L
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        backButton = binding.mediaBackButton
-        trackImage = binding.trackImage
-        trackName = binding.trackName
-        artistName = binding.artistName
-        trackTime = binding.trackTime
-        trackAlbum = binding.trackAlbum
-        trackYear = binding.trackYear
-        trackGenre = binding.trackGenre
-        trackCountry = binding.trackCountry
+        setContentView(binding?.root)
 
         bindTrack(getTrack())
 
-        backButton.setOnClickListener {
+        binding?.mediaBackButton?.setOnClickListener {
             finish()
         }
+
+        preparePlayer(getTrack())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        handler.removeCallbacks(updateTimer())
     }
 
     private fun getTrack(): Track {
@@ -57,7 +62,7 @@ class MediaActivity : AppCompatActivity() {
 
         val track = if (trackData.isNullOrEmpty()) {
             Track("", "", "", "", "",
-                "", "", "", "")
+                "", "", "", "", "")
         } else {
             gson.fromJson(trackData, Track::class.java)
         }
@@ -66,35 +71,99 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun bindTrack(track: Track) {
-        trackName.text = track.trackName
-        artistName.text = track.artistName
-        trackTime.text = if (track.trackTime.isNotEmpty()) {
+        binding?.trackName?.text = track.trackName
+        binding?.artistName?.text = track.artistName
+        binding?.trackTime?.text = if (track.trackTime.isNotEmpty()) {
             SimpleDateFormat(
                 "mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
         } else {
             ""
         }
 
-        trackAlbum.text = track.collectionName.orEmpty()
-        trackYear.text = if (track.releaseDate.isNotEmpty() && track.releaseDate != "0") {
+        binding?.trackAlbum?.text = track.collectionName.orEmpty()
+        binding?.trackYear?.text = if (!track.releaseDate.isNullOrEmpty() && track.releaseDate != "0") {
             SimpleDateFormat("yyyy").format(
                 SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(track.releaseDate) as Date
             ).toString()
         } else {
             ""
         }
-        trackGenre.text = track.primaryGenreName
-        trackCountry.text = track.country
+
+        binding?.trackGenre?.text = track.primaryGenreName
+        binding?.trackCountry?.text = track.country
 
         if (track.artworkUrl100.isNotEmpty()) {
-            trackImage.setImageResource(R.drawable.track_image_placeholder)
+            binding?.trackImage?.setImageResource(R.drawable.track_image_placeholder)
 
-            Glide.with(trackImage)
+            Glide.with(binding?.trackImage!!)
                 .load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
                 .placeholder(R.drawable.track_image_placeholder)
                 .centerCrop()
                 .transform(RoundedCorners(TrackViewHolder.ROUNDING_RADIUS))
-                .into(trackImage)
+                .into(binding?.trackImage!!)
         }
+    }
+
+    private fun preparePlayer(track: Track) {
+        if (!track.previewUrl.isNullOrEmpty()) {
+            mediaPlayer.setDataSource(track.previewUrl)
+            mediaPlayer.prepareAsync()
+
+            binding?.play?.setOnClickListener { playbackControl() }
+
+            mediaPlayer.setOnPreparedListener {
+                binding?.play?.isEnabled = true
+                playerState = STATE_PREPARED
+                setTimerValue()
+            }
+
+            mediaPlayer.setOnCompletionListener {
+                binding?.play?.setImageResource(R.drawable.button_play)
+                playerState = STATE_PREPARED
+                handler.removeCallbacks(updateTimer())
+                binding?.timer?.text = getString(R.string.timer_start_value_00_00)
+            }
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        binding?.play?.setImageResource(R.drawable.button_pause)
+        playerState = STATE_PLAYING
+        handler.post(updateTimer())
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        binding?.play?.setImageResource(R.drawable.button_play)
+        playerState = STATE_PAUSED
+        handler.removeCallbacks(updateTimer())
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    private fun updateTimer(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    setTimerValue()
+                    handler.postDelayed(this, TIMER_DELAY)
+                }
+            }
+        }
+    }
+
+    private fun setTimerValue() {
+        binding?.timer?.text = SimpleDateFormat("mm:ss", Locale.getDefault())
+            .format(mediaPlayer.currentPosition)
     }
 }

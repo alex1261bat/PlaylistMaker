@@ -10,27 +10,23 @@ const val DARK_THEME_KEY = "dark_theme"
 const val SEARCH_HISTORY = "search_history"
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        val searchButton = binding.buttonSearch
-        val mediaButton = binding.buttonMedia
-        val settingsButton = binding.buttonSettings
-
-        searchButton.setOnClickListener {
+        binding?.buttonSearch?.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
 
-        mediaButton.setOnClickListener {
+        binding?.buttonMedia?.setOnClickListener {
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }
 
-        settingsButton.setOnClickListener {
+        binding?.buttonSettings?.setOnClickListener {
             val settingsIntent = Intent(this, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }
