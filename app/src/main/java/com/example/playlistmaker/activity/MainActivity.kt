@@ -17,18 +17,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         val searchButton = binding?.buttonSearch
-        val mediaButton = binding?.buttonMedia
-        val settingsButton = binding?.buttonSettings
 
         searchButton?.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
 
+        val mediaButton = binding?.buttonMedia
+
         mediaButton?.setOnClickListener {
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }
+
+        val settingsButton = binding?.buttonSettings
 
         settingsButton?.setOnClickListener {
             val settingsIntent = Intent(this, SettingsActivity::class.java)
