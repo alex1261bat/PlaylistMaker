@@ -1,14 +1,16 @@
-package com.example.playlistmaker.model
+package com.example.playlistmaker.data
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.activity.SEARCH_HISTORY
+import com.example.playlistmaker.domain.api.SearchHistory
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.ui.main.SEARCH_HISTORY
 import com.google.gson.Gson
 
-class SearchHistory(private val sharedPreferences: SharedPreferences) {
+class SearchHistoryImpl(private val sharedPreferences: SharedPreferences) : SearchHistory {
     private val gson = Gson()
     private val trackHistoryList = mutableListOf<Track>()
 
-    fun getHistoryList(): List<Track> {
+    override fun getHistoryList(): List<Track> {
         trackHistoryList.clear()
 
         if (sharedPreferences.getString(SEARCH_HISTORY, "")?.isNotEmpty() == true) {
@@ -21,7 +23,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         return trackHistoryList
     }
 
-    fun addTrackToHistory(track: Track) {
+    override fun addTrackToHistory(track: Track) {
         if (trackHistoryList.size < 10) {
             checkTrack(track)
             saveHistoryPrefs()
@@ -32,7 +34,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         }
     }
 
-    fun clearHistory() {
+    override fun clearHistory() {
         trackHistoryList.clear()
         sharedPreferences.edit()
             .remove(SEARCH_HISTORY)

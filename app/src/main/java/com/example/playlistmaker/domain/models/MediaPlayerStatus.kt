@@ -1,4 +1,4 @@
-package com.example.playlistmaker.model
+package com.example.playlistmaker.domain.models
 
 enum class MediaPlayerStatus {
     STATE_PREPARED,
