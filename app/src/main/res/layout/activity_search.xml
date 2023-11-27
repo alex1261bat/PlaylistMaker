@@ -18,14 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_height_52dp"
-        android:background="@drawable/search_linearlayout_round_corners"
         android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/search_edit_text" />
 
         <EditText
             style="@style/SearchEditTextStyle"
@@ -33,14 +26,18 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/search_input_line"
             android:layout_weight="1"
-            android:layout_marginStart="2dp"
+            android:layout_gravity="center"
             android:hint="@string/search"
+            android:drawablePadding="@dimen/search_icon_padding_8dp"
             android:inputType="text"
             android:maxLines="1"
-            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/search_edit_text"
+            android:paddingStart="@dimen/search_padding_start_12dp"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textColor="@color/yp_black"
             android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/search_linearlayout_round_corners"/>
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -110,7 +107,7 @@
         android:layout_height="@dimen/progress_bar_size_44dp"
         android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/purple_500"
+        android:indeterminateTint="@color/primary_500"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

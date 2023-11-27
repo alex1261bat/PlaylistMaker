@@ -12,8 +12,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.Creator
-import com.example.playlistmaker.data.SearchHistoryImpl
+import com.example.playlistmaker.data.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.api.TrackInteractor.TrackConsumer
 import com.example.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.models.Track
@@ -31,7 +32,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { findTrack(binding?.searchEditText?.text.toString()) }
     private val trackInteractor = Creator.provideTrackInteractor()
-    private var searchHistoryInteractor: SearchHistoryInteractorImpl? = null
+    private var searchHistoryInteractor: SearchHistoryInteractor? = null
 
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
@@ -46,8 +47,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         setContentView(binding?.root)
 
         trackAdapter = TrackAdapter(trackList, this)
-        searchHistoryInteractor = SearchHistoryInteractorImpl(
-            SearchHistoryImpl(getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)))
+        searchHistoryInteractor = Creator.provideSearchHistoryInteractor(
+            getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE))
         historyAdapter = TrackAdapter(searchHistoryInteractor!!.getHistoryList(), this)
         binding?.trackRecyclerView?.adapter = trackAdapter
 
