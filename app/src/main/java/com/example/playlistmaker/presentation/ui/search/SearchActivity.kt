@@ -1,4 +1,4 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -11,18 +11,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.adapter.ITunesSearchAPI
-import com.example.playlistmaker.adapter.TrackAdapter
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.data.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.model.SearchHistory
-import com.example.playlistmaker.model.Track
-import com.example.playlistmaker.model.TrackResponse
+import com.example.playlistmaker.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.api.TrackInteractor.TrackConsumer
+import com.example.playlistmaker.domain.impl.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.ui.main.PLAYLIST_MAKER_PREFERENCES
+import com.example.playlistmaker.presentation.ui.media.MediaActivity
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private var binding: ActivitySearchBinding? = null
@@ -30,18 +28,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private var historyAdapter: TrackAdapter? = null
     private var savedText = ""
     private val trackList = ArrayList<Track>()
-    private val iTunesBaseUrl = "https://itunes.apple.com"
-    private var searchHistory: SearchHistory? = null
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { findTrack(binding?.searchEditText?.text.toString()) }
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
+    private val trackInteractor = Creator.provideTrackInteractor()
+    private var searchHistoryInteractor: SearchHistoryInteractor? = null
 
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
@@ -56,12 +47,13 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         setContentView(binding?.root)
 
         trackAdapter = TrackAdapter(trackList, this)
-        searchHistory = SearchHistory(getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE))
-        historyAdapter = TrackAdapter(searchHistory!!.getHistoryList(), this)
+        searchHistoryInteractor = Creator.provideSearchHistoryInteractor(
+            getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE))
+        historyAdapter = TrackAdapter(searchHistoryInteractor!!.getHistoryList(), this)
         binding?.trackRecyclerView?.adapter = trackAdapter
 
         binding?.clearHistoryButton?.setOnClickListener {
-            searchHistory?.clearHistory()
+            searchHistoryInteractor!!.clearHistory()
             trackList.clear()
             binding?.youSearched?.visibility = View.GONE
             binding?.clearHistoryButton?.visibility = View.GONE
@@ -72,7 +64,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
 
         binding?.searchEditText?.setOnFocusChangeListener { _, hasFocus ->
-            if (searchHistory!!.getHistoryList().isNotEmpty() && hasFocus
+            if (searchHistoryInteractor!!.getHistoryList().isNotEmpty() && hasFocus
                 && binding?.searchEditText!!.text.isBlank()) {
                 binding?.trackRecyclerView?.adapter = historyAdapter
                 binding?.youSearched?.visibility = View.VISIBLE
@@ -134,7 +126,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                     binding?.nothingFound?.visibility = View.GONE
                 }
 
-                if (searchHistory!!.getHistoryList().isNotEmpty()
+                if (searchHistoryInteractor!!.getHistoryList().isNotEmpty()
                     && binding?.searchEditText!!.hasFocus() && s?.isEmpty() == true) {
                     binding?.trackRecyclerView?.adapter = historyAdapter
                     binding?.youSearched?.visibility = View.VISIBLE
@@ -183,43 +175,30 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             binding?.connectionError?.visibility = View.GONE
             binding?.progressBar?.visibility = View.VISIBLE
 
-            iTunesService.search(searchText)
-                .enqueue(object : Callback<TrackResponse> {
-
-                    override fun onResponse(call: Call<TrackResponse>,
-                                            response: Response<TrackResponse>) {
+            trackInteractor.findTracks(searchText, consumer = object : TrackConsumer {
+                override fun consume(foundTracks: List<Track>?) {
+                    handler.post{
                         binding?.progressBar?.visibility = View.GONE
 
-                        if (response.code() == 200) {
-                            trackList.clear()
-                            binding?.nothingFound?.visibility = View.GONE
-
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackList.addAll(response.body()?.results!!)
-                                trackAdapter?.notifyDataSetChanged()
-                            }
-
-                            if (trackList.isEmpty()) {
-                                binding?.nothingFound?.visibility = View.VISIBLE
-                            }
-
-                        } else {
+                        if (!foundTracks.isNullOrEmpty()) {
+                            trackList.addAll(foundTracks)
+                            trackAdapter?.notifyDataSetChanged()
+                        } else if (foundTracks?.isEmpty() == true) {
                             binding?.nothingFound?.visibility = View.VISIBLE
+                        } else {
+                            binding?.connectionError?.visibility = View.VISIBLE
                         }
                     }
+                }
+            })
 
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        binding?.progressBar?.visibility = View.GONE
-                        binding?.connectionError?.visibility = View.VISIBLE
-                    }
-                })
             hideKeyBoard()
         }
     }
 
     override fun onClick(track: Track) {
         if (clickDebounce()) {
-            searchHistory?.addTrackToHistory(track)
+            searchHistoryInteractor?.addTrackToHistory(track)
             historyAdapter?.notifyDataSetChanged()
 
             val gson = Gson()

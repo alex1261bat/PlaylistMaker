@@ -1,4 +1,4 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation.ui.media
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,14 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.activity.SearchActivity.Companion.TRACK_DATA
-import com.example.playlistmaker.adapter.TrackViewHolder
 import com.example.playlistmaker.databinding.ActivityMediaBinding
-import com.example.playlistmaker.model.MediaPlayerStatus
-import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PAUSED
-import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PLAYING
-import com.example.playlistmaker.model.MediaPlayerStatus.STATE_PREPARED
-import com.example.playlistmaker.model.Track
+import com.example.playlistmaker.domain.models.MediaPlayerStatus
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.ui.search.SearchActivity.Companion.TRACK_DATA
+import com.example.playlistmaker.presentation.ui.search.TrackViewHolder
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -113,13 +110,13 @@ class MediaActivity : AppCompatActivity() {
 
             mediaPlayer.setOnPreparedListener {
                 binding?.play?.isEnabled = true
-                playerState = STATE_PREPARED
+                playerState = MediaPlayerStatus.STATE_PREPARED
                 setTimerValue()
             }
 
             mediaPlayer.setOnCompletionListener {
                 binding?.play?.setImageResource(R.drawable.button_play)
-                playerState = STATE_PREPARED
+                playerState = MediaPlayerStatus.STATE_PREPARED
                 handler.removeCallbacks(updateTimer())
                 binding?.timer?.text = getString(R.string.timer_start_value_00_00)
             }
@@ -129,23 +126,23 @@ class MediaActivity : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         binding?.play?.setImageResource(R.drawable.button_pause)
-        playerState = STATE_PLAYING
+        playerState = MediaPlayerStatus.STATE_PLAYING
         handler.post(updateTimer())
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         binding?.play?.setImageResource(R.drawable.button_play)
-        playerState = STATE_PAUSED
+        playerState = MediaPlayerStatus.STATE_PAUSED
         handler.removeCallbacks(updateTimer())
     }
 
     private fun playbackControl() {
         when(playerState) {
-            STATE_PLAYING -> {
+            MediaPlayerStatus.STATE_PLAYING -> {
                 pausePlayer()
             }
-            STATE_PREPARED, STATE_PAUSED -> {
+            MediaPlayerStatus.STATE_PREPARED, MediaPlayerStatus.STATE_PAUSED -> {
                 startPlayer()
             }
         }
@@ -154,7 +151,7 @@ class MediaActivity : AppCompatActivity() {
     private fun updateTimer(): Runnable {
         return object : Runnable {
             override fun run() {
-                if (playerState == STATE_PLAYING) {
+                if (playerState == MediaPlayerStatus.STATE_PLAYING) {
                     setTimerValue()
                     handler.postDelayed(this, TIMER_DELAY)
                 }

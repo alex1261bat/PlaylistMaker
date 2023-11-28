@@ -1,9 +1,10 @@
-package com.example.playlistmaker.model
+package com.example.playlistmaker
 
 import android.app.Application
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.activity.DARK_THEME_KEY
-import com.example.playlistmaker.activity.PLAYLIST_MAKER_PREFERENCES
+import com.example.playlistmaker.presentation.ui.main.DARK_THEME_KEY
+import com.example.playlistmaker.presentation.ui.main.PLAYLIST_MAKER_PREFERENCES
 
 class App: Application() {
     var darkTheme = false
@@ -15,6 +16,10 @@ class App: Application() {
 
         if (sharedPreferences.contains(DARK_THEME_KEY)) {
             darkTheme = sharedPreferences.getString(DARK_THEME_KEY, "").toBoolean()
+        } else {
+            when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                Configuration.UI_MODE_NIGHT_YES -> darkTheme = true
+            }
         }
 
         switchTheme(darkTheme)
