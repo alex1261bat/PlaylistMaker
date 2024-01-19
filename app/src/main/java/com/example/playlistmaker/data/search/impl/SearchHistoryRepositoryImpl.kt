@@ -44,9 +44,9 @@ class SearchHistoryRepositoryImpl(
 
     override fun clearHistory() {
         trackHistoryList.clear()
-        sharedPreferences.edit()
-            .remove(SEARCH_HISTORY)
-            .apply()
+        sharedPreferences.edit {
+            remove(SEARCH_HISTORY)
+        }
     }
 
     override fun getTrackForPlaying(): Track? {
@@ -57,16 +57,15 @@ class SearchHistoryRepositoryImpl(
 
         sharedPreferences.edit {
             remove(TRACK_FOR_PLAYING)
-            apply()
         }
 
         return trackForPlaying
     }
 
     override fun saveTrackForPlaying(track: Track?) {
-        sharedPreferences.edit()
-            .putString(TRACK_FOR_PLAYING, gson.toJson(track))
-            .apply()
+        sharedPreferences.edit {
+            putString(TRACK_FOR_PLAYING, gson.toJson(track))
+        }
     }
 
     private fun checkTrack(track: Track) {
@@ -78,8 +77,8 @@ class SearchHistoryRepositoryImpl(
     }
 
     private fun saveHistoryPrefs() {
-        sharedPreferences.edit()
-            .putString(SEARCH_HISTORY, gson.toJson(trackHistoryList))
-            .apply()
+        sharedPreferences.edit {
+            putString(SEARCH_HISTORY, gson.toJson(trackHistoryList))
+        }
     }
 }

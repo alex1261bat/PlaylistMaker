@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import com.example.playlistmaker.data.settings.ApplicationThemeRepository
 import com.example.playlistmaker.domain.settings.model.ApplicationTheme
 
@@ -45,9 +46,8 @@ class ApplicationThemeRepositoryImpl(
     }
 
     private fun saveApplicationTheme(applicationTheme: ApplicationTheme) {
-        with(sharedPreferences.edit()) {
+        sharedPreferences.edit {
             putString(DARK_THEME_KEY, applicationTheme.name)
-            apply()
         }
     }
 }
