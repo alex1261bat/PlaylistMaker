@@ -11,9 +11,9 @@ import com.example.playlistmaker.domain.settings.model.ApplicationTheme
 import com.example.playlistmaker.domain.sharing.SharingInteractor
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
+    private val sharedPreferences = Creator.provideSharedPreferences(application)
     private val applicationThemeInteractor: ApplicationThemeInteractor =
-        Creator.provideApplicationThemeInteractor(Creator.provideSharedPreferences(application),
-            application.applicationContext)
+        Creator.provideApplicationThemeInteractor(sharedPreferences, application.applicationContext)
     private val sharingInteractor: SharingInteractor = Creator.provideSharingInteractor(application)
     private val applicationTheme = MutableLiveData(applicationThemeInteractor
         .getApplicationTheme())

@@ -1,6 +1,7 @@
 package com.example.playlistmaker.data.search.impl
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.example.playlistmaker.data.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
@@ -54,9 +55,10 @@ class SearchHistoryRepositoryImpl(
                 sharedPreferences.getString(TRACK_FOR_PLAYING, ""), Track :: class.java)
         }
 
-        sharedPreferences.edit()
-            .remove(TRACK_FOR_PLAYING)
-            .apply()
+        sharedPreferences.edit {
+            remove(TRACK_FOR_PLAYING)
+            apply()
+        }
 
         return trackForPlaying
     }

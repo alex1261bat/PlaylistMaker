@@ -17,8 +17,8 @@ import java.util.Locale
 class PlayerViewModel(application: Application) : AndroidViewModel(application) {
     private var mediaPlayer: MediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
-    private val playerInteractor = Creator.providePlayerInteractor(
-        Creator.provideSharedPreferences(application))
+    private val sharedPreferences = Creator.provideSharedPreferences(application)
+    private val playerInteractor = Creator.providePlayerInteractor(sharedPreferences)
     private val track = playerInteractor.getTrackForPlaying()
     private val trackTimerRunnable = object : Runnable {
             override fun run() {

@@ -25,6 +25,7 @@ import com.example.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 import com.example.playlistmaker.ui.main.PLAYLIST_MAKER_PREFERENCES
 
 object Creator {
+
     private fun getTrackRepository(context: Context): TrackRepository {
         return TrackRepositoryImpl(RetrofitNetworkClient(context))
     }

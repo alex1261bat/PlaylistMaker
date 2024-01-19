@@ -16,8 +16,8 @@ import com.example.playlistmaker.util.SingleLiveEvent
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val trackInteractor = Creator.provideTrackInteractor(application)
-    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(
-        Creator.provideSharedPreferences(application))
+    private val sharedPreferences = Creator.provideSharedPreferences(application)
+    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(sharedPreferences)
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { findTrack() }
     private var searchHistoryList = listOf<Track>()

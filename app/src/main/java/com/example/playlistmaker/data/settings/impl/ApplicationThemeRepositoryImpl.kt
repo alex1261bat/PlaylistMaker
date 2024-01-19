@@ -23,12 +23,12 @@ class ApplicationThemeRepositoryImpl(
     }
 
     override fun getApplicationTheme(): ApplicationTheme {
-        if (sharedPreferences.contains(DARK_THEME_KEY)) {
-            darkTheme =
-                ApplicationTheme.valueOf(sharedPreferences.getString(DARK_THEME_KEY, "").toString())
+        darkTheme = if (sharedPreferences.contains(DARK_THEME_KEY)) {
+            ApplicationTheme.valueOf(sharedPreferences.getString(DARK_THEME_KEY, "").toString())
         } else {
             when (context.resources.configuration.uiMode.and(UI_MODE_NIGHT_MASK)) {
-                UI_MODE_NIGHT_YES -> darkTheme = ApplicationTheme.DARK
+                UI_MODE_NIGHT_YES -> ApplicationTheme.DARK
+                else -> ApplicationTheme.LIGHT
             }
         }
 
