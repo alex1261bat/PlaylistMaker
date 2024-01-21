@@ -13,7 +13,7 @@ class ApplicationThemeRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
     private val context: Context
 ) : ApplicationThemeRepository {
-    private lateinit var darkTheme: ApplicationTheme
+    private var darkTheme = ApplicationTheme.LIGHT
 
     companion object {
         const val DARK_THEME_KEY = "dark_theme"
@@ -24,12 +24,12 @@ class ApplicationThemeRepositoryImpl(
     }
 
     override fun getApplicationTheme(): ApplicationTheme {
-        darkTheme = if (sharedPreferences.contains(DARK_THEME_KEY)) {
-            ApplicationTheme.valueOf(sharedPreferences.getString(DARK_THEME_KEY, "").toString())
+        if (sharedPreferences.contains(DARK_THEME_KEY)) {
+            darkTheme =
+                ApplicationTheme.valueOf(sharedPreferences.getString(DARK_THEME_KEY, "").toString())
         } else {
-            when (context.resources.configuration.uiMode.and(UI_MODE_NIGHT_MASK)) {
-                UI_MODE_NIGHT_YES -> ApplicationTheme.DARK
-                else -> ApplicationTheme.LIGHT
+            when(context.resources.configuration.uiMode.and(UI_MODE_NIGHT_MASK)) {
+                UI_MODE_NIGHT_YES -> darkTheme = ApplicationTheme.DARK
             }
         }
 

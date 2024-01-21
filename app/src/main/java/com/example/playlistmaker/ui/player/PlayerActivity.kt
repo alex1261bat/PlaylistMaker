@@ -13,7 +13,6 @@ import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.TrackViewHolder
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
@@ -70,21 +69,11 @@ class PlayerActivity : AppCompatActivity() {
     private fun bindTrack(track: Track) {
         binding?.trackName?.text = track.trackName
         binding?.artistName?.text = track.artistName
-        binding?.trackTime?.text = if (track.trackTime.isNotEmpty()) {
-            SimpleDateFormat(
-                "mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
-        } else {
-            ""
-        }
+        binding?.trackTime?.text = SimpleDateFormat("mm:ss", Locale.getDefault())
+            .format(track.trackTime.toLong()).orEmpty()
 
         binding?.trackAlbum?.text = track.collectionName.orEmpty()
-        binding?.trackYear?.text = if (!track.releaseDate.isNullOrEmpty() && track.releaseDate != "0") {
-            SimpleDateFormat("yyyy").format(
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(track.releaseDate) as Date
-            ).toString()
-        } else {
-            ""
-        }
+        binding?.trackYear?.text = track.releaseDate?.substring(0, 4).orEmpty()
 
         binding?.trackGenre?.text = track.primaryGenreName
         binding?.trackCountry?.text = track.country
