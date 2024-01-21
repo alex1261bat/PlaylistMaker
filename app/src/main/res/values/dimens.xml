@@ -39,7 +39,7 @@
     <dimen name="media_text_size_13sp">13sp</dimen>
     <dimen name="progress_bar_margin_top_140dp">140dp</dimen>
     <dimen name="progress_bar_size_44dp">44dp</dimen>
-    <dimen name="search_height_52dp">52dp</dimen>
+    <dimen name="search_height_36dp">36dp</dimen>
     <dimen name="search_padding_start_12dp">12dp</dimen>
     <dimen name="search_icon_padding_8dp">8dp</dimen>
     <dimen name="media_back_arrow_start_padding">-20dp</dimen>

@@ -17,7 +17,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_height_52dp"
+        android:layout_height="@dimen/search_height_36dp"
+        android:background="@drawable/search_linearlayout_round_corners"
         android:orientation="horizontal">
 
         <EditText
@@ -107,7 +108,7 @@
         android:layout_height="@dimen/progress_bar_size_44dp"
         android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/primary_500"
+        android:indeterminateTint="@color/yp_blue"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -118,7 +119,19 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical"
         app:layoutManager="LinearLayoutManager"
-        android:layout_marginTop="@dimen/margin_top" />
+        android:layout_marginTop="@dimen/margin_top"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackHistoryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:layoutManager="LinearLayoutManager"
+        android:layout_marginTop="@dimen/margin_top"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/clearHistoryButton"

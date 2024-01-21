@@ -16,13 +16,13 @@
         app:title="@string/settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        style="@style/SettingsTextStyle"
         android:id="@+id/themeSwitcher"
+        style="@style/SettingsTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dark_theme"
         android:layout_gravity="start"
-        android:layout_marginTop="@dimen/settings_padding_top_bottom" />
+        android:layout_marginTop="@dimen/settings_padding_top_bottom"
+        android:text="@string/dark_theme" />
 
     <FrameLayout
         android:id="@+id/shareButton"
