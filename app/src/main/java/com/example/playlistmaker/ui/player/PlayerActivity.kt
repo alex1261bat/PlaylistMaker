@@ -17,7 +17,7 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private var binding: ActivityPlayerBinding? = null
-    private lateinit var viewModel: PlayerViewModel
+    private var viewModel: PlayerViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,27 +31,26 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.onPause()
+        viewModel?.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.onStop()
+        viewModel?.onStop()
     }
 
     private fun initViews(){
         binding?.apply {
             mediaBackButton.setOnClickListener { finish() }
-            play.setOnClickListener { viewModel.clickPlay() }
+            play.setOnClickListener { viewModel?.clickPlay() }
         }
     }
 
     private fun initObservers() {
-        viewModel.state.observe(this) {
+        viewModel?.state?.observe(this) {
             it.track?.let { track -> bindTrack(track) }
             if (it.track != null) {
-                binding?.timer?.text = it.trackTime.ifEmpty {
-                    getString(R.string.timer_start_value_00_00) }
+                binding?.timer?.text = it.trackTime.ifEmpty { getString(R.string.timer_start_value_00_00) }
             }
 
             it?.playerState?.let { state ->
@@ -59,8 +58,8 @@ class PlayerActivity : AppCompatActivity() {
                     MediaPlayerStatus.STATE_PLAYING ->
                         binding?.play?.setImageResource(R.drawable.button_pause)
                     MediaPlayerStatus.STATE_PREPARED,
-                    MediaPlayerStatus.STATE_PAUSED
-                    -> binding?.play?.setImageResource(R.drawable.button_play)
+                    MediaPlayerStatus.STATE_PAUSED ->
+                        binding?.play?.setImageResource(R.drawable.button_play)
                 }
             }
         }

@@ -19,7 +19,7 @@ class SearchActivity : AppCompatActivity() {
     private var binding: ActivitySearchBinding? = null
     private var trackAdapter: TrackAdapter? = null
     private var historyAdapter: TrackAdapter? = null
-    private lateinit var viewModel: SearchViewModel
+    private var viewModel: SearchViewModel? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +35,8 @@ class SearchActivity : AppCompatActivity() {
     private fun initViews() {
         binding?.apply {
             binding?.searchBackButton?.setOnClickListener { finish() }
-            updateButton.setOnClickListener { viewModel.clickUpdateButton() }
-            clearIcon.setOnClickListener { viewModel.clickClearIcon() }
+            updateButton.setOnClickListener { viewModel?.clickUpdateButton() }
+            clearIcon.setOnClickListener { viewModel?.clickClearIcon() }
             initHistoryListRecyclerView()
             initTrackListRecyclerView()
         }
@@ -46,39 +46,39 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initTrackListRecyclerView() {
-        trackAdapter = TrackAdapter(viewModel::clickTrack)
+        trackAdapter = TrackAdapter(viewModel!!::clickTrack)
         binding?.trackRecyclerView?.adapter = trackAdapter
     }
 
     private fun initHistoryListRecyclerView() {
-        historyAdapter = TrackAdapter(viewModel::clickTrack)
+        historyAdapter = TrackAdapter(viewModel!!::clickTrack)
         binding?.trackHistoryRecyclerView?.adapter = historyAdapter
     }
 
     private fun initSearchEditText(): EditText? {
         return binding?.searchEditText?.apply {
             doOnTextChanged { text, _, _, _ ->
-                viewModel.searchRequestIsChanged(text?.toString()?.trim() ?: "")
+                viewModel?.searchRequestIsChanged(text?.toString()?.trim() ?: "")
             }
 
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.clickEnter()
+                    viewModel?.clickEnter()
                 }
 
                 return@setOnEditorActionListener false
             }
 
-            setOnFocusChangeListener { _, hasFocus -> viewModel.searchFocusIsChanged(hasFocus) }
+            setOnFocusChangeListener { _, hasFocus -> viewModel?.searchFocusIsChanged(hasFocus) }
         }
     }
 
     private fun initClearHistoryButton() {
-        binding?.clearHistoryButton?.setOnClickListener { viewModel.clickClearHistoryButton() }
+        binding?.clearHistoryButton?.setOnClickListener { viewModel?.clickClearHistoryButton() }
     }
 
     private fun initObservers() {
-        viewModel.state.observe(this) {
+        viewModel?.state?.observe(this) {
             binding?.apply {
                 trackAdapter?.updateData(it.trackList)
                 trackRecyclerView.isVisible = it.trackList.isNotEmpty()
@@ -94,7 +94,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.searchScreenEvent.observe(this) {
+        viewModel?.searchScreenEvent?.observe(this) {
             when (it) {
                 is SearchScreenEvent.OpenPlayerScreen -> {
                     startActivity(Intent(this, PlayerActivity()::class.java)) }

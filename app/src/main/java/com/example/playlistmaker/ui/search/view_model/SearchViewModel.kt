@@ -47,19 +47,19 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         handler.removeCallbacks(searchRunnable)
 
         if (searchRequest.isNotBlank()) {
-            searchScreenState.value = getCurrentScreenState().copy(
-                clearIconVisibility = true,
-                historyVisibility = false,
-                youSearchedVisibility = false,
-                clearHistoryButtonVisibility = false
+            searchScreenState.value = getCurrentScreenState()
+                .copy(clearIconVisibility = true,
+                    historyVisibility = false,
+                    youSearchedVisibility = false,
+                    clearHistoryButtonVisibility = false,
+                    nothingFoundVisibility = false
             )
             handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         } else {
             searchScreenState.value = SearchScreenState(
                 searchHistoryList = searchHistoryList,
                 youSearchedVisibility = searchHistoryList.isNotEmpty(),
-                clearHistoryButtonVisibility = searchHistoryList.isNotEmpty(),
-                historyVisibility = true
+                clearHistoryButtonVisibility = searchHistoryList.isNotEmpty()
             )
         }
     }
@@ -102,6 +102,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     fun clickUpdateButton() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchScreenState.value = getCurrentScreenState().copy(
+            connectionErrorVisibility = false,
+            historyVisibility = false
+        )
     }
 
     fun clickEnter() {
@@ -165,7 +169,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 trackList = trackList,
                 searchHistoryList = searchHistoryList,
                 nothingFoundVisibility = trackList.isEmpty(),
-                historyVisibility = trackList.isNotEmpty()
+                historyVisibility = false
             )
         )
     }
@@ -175,7 +179,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             SearchScreenState(
                 clearIconVisibility = savedText.isNotEmpty(),
                 searchHistoryList = searchHistoryList,
-                connectionErrorVisibility = true
+                connectionErrorVisibility = true,
+                historyVisibility = false
             )
         )
     }
