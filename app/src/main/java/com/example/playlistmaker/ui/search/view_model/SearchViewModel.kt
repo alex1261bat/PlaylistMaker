@@ -1,23 +1,22 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.playlistmaker.creator.Creator
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.ui.search.SearchScreenEvent
 import com.example.playlistmaker.ui.search.SearchScreenState
 import com.example.playlistmaker.util.Resource
 import com.example.playlistmaker.util.SingleLiveEvent
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val trackInteractor = Creator.provideTrackInteractor(application)
-    private val sharedPreferences = Creator.provideSharedPreferences(application)
-    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(sharedPreferences)
+class SearchViewModel(
+    private val trackInteractor: TrackInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor
+) : ViewModel() {
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { findTrack() }
     private var searchHistoryList = listOf<Track>()
@@ -29,12 +28,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     val searchScreenEvent = SingleLiveEvent<SearchScreenEvent>()
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     }
 
     init {
-        getHistoryList()
+        getHistoryList(searchHistoryInteractor)
     }
 
     override fun onCleared() {
@@ -54,7 +53,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                     clearHistoryButtonVisibility = false,
                     nothingFoundVisibility = false
             )
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
         } else {
             searchScreenState.value = SearchScreenState(
                 searchHistoryList = searchHistoryList,
@@ -101,7 +100,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     fun clickUpdateButton() {
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
         searchScreenState.value = getCurrentScreenState().copy(
             connectionErrorVisibility = false,
             historyVisibility = false
@@ -111,7 +110,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     fun clickEnter() {
         if (savedText.isNotBlank()) {
             handler.removeCallbacks(searchRunnable)
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
         }
     }
 
@@ -140,7 +139,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         trackInteractor.findTracks(savedText, trackConsumer)
     }
 
-    private fun getHistoryList() {
+    private fun getHistoryList(searchHistoryInteractor: SearchHistoryInteractor) {
         searchHistoryList = searchHistoryInteractor.getHistoryList()
         searchScreenState.value = SearchScreenState(
             searchHistoryList = searchHistoryList,
@@ -155,7 +154,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         val currentClickIsAllowed = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
         }
         return currentClickIsAllowed
     }

@@ -2,8 +2,6 @@ package com.example.playlistmaker.ui.player
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -12,18 +10,18 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.TrackViewHolder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private var binding: ActivityPlayerBinding? = null
-    private var viewModel: PlayerViewModel? = null
+    private val viewModel: PlayerViewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        viewModel = ViewModelProvider(this).get<PlayerViewModel>()
 
         initViews()
         initObservers()
@@ -31,23 +29,23 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel?.onPause()
+        viewModel.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel?.onStop()
+        viewModel.onStop()
     }
 
     private fun initViews(){
         binding?.apply {
             mediaBackButton.setOnClickListener { finish() }
-            play.setOnClickListener { viewModel?.clickPlay() }
+            play.setOnClickListener { viewModel.clickPlay() }
         }
     }
 
     private fun initObservers() {
-        viewModel?.state?.observe(this) {
+        viewModel.state.observe(this) {
             it.track?.let { track -> bindTrack(track) }
             if (it.track != null) {
                 binding?.timer?.text = it.trackTime.ifEmpty { getString(R.string.timer_start_value_00_00) }

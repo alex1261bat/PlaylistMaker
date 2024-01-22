@@ -7,9 +7,9 @@ import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 
 class SearchHistoryRepositoryImpl(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson
 ) : SearchHistoryRepository {
-    private val gson = Gson()
     private val trackHistoryList = mutableListOf<Track>()
     private var trackForPlaying: Track? = null
 
@@ -50,9 +50,11 @@ class SearchHistoryRepositoryImpl(
     }
 
     override fun getTrackForPlaying(): Track? {
-        if (sharedPreferences.getString(TRACK_FOR_PLAYING, "")?.isNotEmpty() == true) {
-            trackForPlaying = gson.fromJson(
+        trackForPlaying = if (sharedPreferences.getString(TRACK_FOR_PLAYING, "")?.isNotEmpty() == true) {
+            gson.fromJson(
                 sharedPreferences.getString(TRACK_FOR_PLAYING, ""), Track :: class.java)
+        } else {
+            null
         }
 
         sharedPreferences.edit {

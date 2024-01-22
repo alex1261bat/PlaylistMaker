@@ -8,17 +8,18 @@ import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.PlayerScreenState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application) {
+class PlayerViewModel(
+    application: Application,
+    playerInteractor: PlayerInteractor
+) : AndroidViewModel(application) {
     private var mediaPlayer: MediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
-    private val sharedPreferences = Creator.provideSharedPreferences(application)
-    private val playerInteractor = Creator.providePlayerInteractor(sharedPreferences)
     private val track = playerInteractor.getTrackForPlaying()
     private val trackTimerRunnable = object : Runnable {
             override fun run() {
@@ -26,7 +27,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                     .format(mediaPlayer.currentPosition)
 
                 if (getCurrentScreenState().playerState == MediaPlayerStatus.STATE_PLAYING) {
-                    handler.postDelayed(this, TIMER_DELAY)
+                    handler.postDelayed(this, TIMER_DELAY_MILLIS)
                     mediaPlayerState.postValue(
                         PlayerScreenState(MediaPlayerStatus.STATE_PLAYING, track, time))
                 } else {
@@ -39,7 +40,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
 
     companion object {
-        private const val TIMER_DELAY = 500L
+        private const val TIMER_DELAY_MILLIS = 500L
     }
 
     init {
