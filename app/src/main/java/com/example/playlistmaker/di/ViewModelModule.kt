@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import android.media.MediaPlayer
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
@@ -12,7 +13,8 @@ val viewModelModule = module {
     viewModel<PlayerViewModel> {
         PlayerViewModel(
             androidApplication(),
-            playerInteractor = get()
+            playerInteractor = get(),
+            mediaPlayer = MediaPlayer()
         )
     }
 

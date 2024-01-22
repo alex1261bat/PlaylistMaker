@@ -1,145 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="@dimen/main_activity_padding_start_end">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/searchBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-16dp"
-        app:buttonGravity="center_vertical"
-        app:navigationIcon="@drawable/back_space"
-        app:title="@string/search" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_height_36dp"
-        android:background="@drawable/search_linearlayout_round_corners"
-        android:orientation="horizontal">
-
-        <EditText
-            style="@style/SearchEditTextStyle"
-            android:id="@+id/searchEditText"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/search_input_line"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:hint="@string/search"
-            android:drawablePadding="@dimen/search_icon_padding_8dp"
-            android:inputType="text"
-            android:maxLines="1"
-            android:drawableStart="@drawable/search_edit_text"
-            android:paddingStart="@dimen/search_padding_start_12dp"
-            android:textCursorDrawable="@drawable/color_cursor"
-            android:textColor="@color/yp_black"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:background="@drawable/search_linearlayout_round_corners"/>
-
-        <ImageView
-            android:id="@+id/clearIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/clear_text"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/nothingFound"
-        style="@style/SearchPlaceholderTextStyle"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/search_placeholder_margin_top"
-        android:text="@string/nothing_found"
-        android:textSize="@dimen/search_placeholder_text"
-        app:drawableTopCompat="@drawable/nothing_found"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:id="@+id/connectionError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/search_placeholder_margin_top"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:paddingHorizontal="@dimen/main_activity_padding_start_end">
 
-        <ImageView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/searchBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/connection_error"
-            android:layout_gravity="center"/>
+            android:layout_marginStart="-16dp"
+            app:buttonGravity="center_vertical"
+            app:navigationIcon="@drawable/back_space"
+            app:title="@string/search" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_height_36dp"
+            android:background="@drawable/search_linearlayout_round_corners"
+            android:orientation="horizontal">
+
+            <EditText
+                style="@style/SearchEditTextStyle"
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/search_input_line"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:hint="@string/search"
+                android:drawablePadding="@dimen/search_icon_padding_8dp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:drawableStart="@drawable/search_edit_text"
+                android:paddingStart="@dimen/search_padding_start_12dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textColor="@color/yp_black"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:background="@drawable/search_linearlayout_round_corners"/>
+
+            <ImageView
+                android:id="@+id/clearIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/clear_text"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/nothingFound"
             style="@style/SearchPlaceholderTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
-            android:text="@string/connection_error"
-            android:lines="4"
-            android:textSize="@dimen/search_placeholder_text"/>
+            android:layout_marginTop="@dimen/search_placeholder_margin_top"
+            android:text="@string/nothing_found"
+            android:textSize="@dimen/search_placeholder_text"
+            app:drawableTopCompat="@drawable/nothing_found"
+            android:visibility="gone"/>
 
-        <ImageView
-            android:id="@+id/updateButton"
+        <LinearLayout
+            android:id="@+id/connectionError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/search_placeholder_margin_top"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/connection_error"
+                android:layout_gravity="center"/>
+
+            <TextView
+                style="@style/SearchPlaceholderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top"
+                android:text="@string/connection_error"
+                android:lines="4"
+                android:textSize="@dimen/search_placeholder_text"/>
+
+            <ImageView
+                android:id="@+id/updateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top"
+                android:src="@drawable/button_update"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            style="@style/SearchPlaceholderTextYouSearchedStyle"
+            android:id="@+id/youSearched"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/you_searched_text_margin_top"
+            android:layout_height="@dimen/text_you_searched"
+            android:text="@string/you_searched"
+            android:textSize="@dimen/search_placeholder_text"
+            android:visibility="gone"/>
+
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_width="@dimen/progress_bar_size_44dp"
+            android:layout_height="@dimen/progress_bar_size_44dp"
+            android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/yp_blue"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
             android:layout_marginTop="@dimen/margin_top"
-            android:src="@drawable/button_update"
-            android:layout_gravity="center"/>
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackHistoryRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
+            android:layout_marginTop="@dimen/margin_top"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/clearHistoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_padding_top_bottom"
+            android:layout_marginBottom="@dimen/search_icon_padding_8dp"
+            android:src="@drawable/clear_history_button"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
     </LinearLayout>
-    
-    <TextView
-        style="@style/SearchPlaceholderTextYouSearchedStyle"
-        android:id="@+id/youSearched"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/you_searched_text_margin_top"
-        android:layout_height="@dimen/text_you_searched"
-        android:text="@string/you_searched"
-        android:textSize="@dimen/search_placeholder_text"
-        android:visibility="gone"/>
-
-    <ProgressBar android:id="@+id/progressBar"
-        android:layout_width="@dimen/progress_bar_size_44dp"
-        android:layout_height="@dimen/progress_bar_size_44dp"
-        android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
-        android:layout_gravity="center"
-        android:indeterminateTint="@color/yp_blue"
-        android:visibility="gone"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        app:layoutManager="LinearLayoutManager"
-        android:layout_marginTop="@dimen/margin_top"
-        android:visibility="gone"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackHistoryRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        app:layoutManager="LinearLayoutManager"
-        android:layout_marginTop="@dimen/margin_top"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/clearHistoryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/settings_padding_top_bottom"
-        android:layout_marginBottom="@dimen/clear_history_margin_bottom"
-        android:src="@drawable/clear_history_button"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-</LinearLayout>
+</ScrollView>

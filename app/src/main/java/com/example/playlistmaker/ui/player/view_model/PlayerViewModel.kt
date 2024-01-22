@@ -16,9 +16,9 @@ import java.util.Locale
 
 class PlayerViewModel(
     application: Application,
-    playerInteractor: PlayerInteractor
+    playerInteractor: PlayerInteractor,
+    private val mediaPlayer: MediaPlayer
 ) : AndroidViewModel(application) {
-    private var mediaPlayer: MediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
     private val track = playerInteractor.getTrackForPlaying()
     private val trackTimerRunnable = object : Runnable {
@@ -63,6 +63,8 @@ class PlayerViewModel(
         if (getCurrentScreenState().playerState != MediaPlayerStatus.STATE_PAUSED) {
             handler.removeCallbacks(trackTimerRunnable)
             mediaPlayer.release()
+        } else {
+            startPlayer()
         }
     }
 

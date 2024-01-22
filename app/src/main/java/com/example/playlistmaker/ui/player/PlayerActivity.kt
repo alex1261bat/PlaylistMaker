@@ -55,6 +55,7 @@ class PlayerActivity : AppCompatActivity() {
                 when (state) {
                     MediaPlayerStatus.STATE_PLAYING ->
                         binding?.play?.setImageResource(R.drawable.button_pause)
+
                     MediaPlayerStatus.STATE_PREPARED,
                     MediaPlayerStatus.STATE_PAUSED ->
                         binding?.play?.setImageResource(R.drawable.button_play)
