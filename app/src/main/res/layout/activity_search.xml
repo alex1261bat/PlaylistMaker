@@ -144,6 +144,6 @@
             android:layout_marginBottom="@dimen/search_icon_padding_8dp"
             android:src="@drawable/clear_history_button"
             android:layout_gravity="center"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>

@@ -39,7 +39,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initViews(){
         binding?.apply {
-            mediaBackButton.setOnClickListener { finish() }
+            playerBackButton.setNavigationOnClickListener { finish() }
             play.setOnClickListener { viewModel.clickPlay() }
         }
     }

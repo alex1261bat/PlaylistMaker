@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_mediaList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.media.fragments.PlaylistFragment">
+
+    <TextView
+        android:id="@+id/nothingFound"
+        style="@style/SearchPlaceholderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/media_placeholder_margin_top_104dp"
+        android:text="@string/empty_media"
+        android:textSize="@dimen/search_placeholder_text"
+        app:drawableTopCompat="@drawable/nothing_found"
+        android:visibility="visible"/>
+</LinearLayout>
