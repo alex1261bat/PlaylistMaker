@@ -13,18 +13,18 @@ class TrackViewHolder(
     private val binding: TrackCardBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track) {
-        binding.trackImage.setImageResource(R.drawable.track_image_placeholder)
+        binding.ivTrackImage.setImageResource(R.drawable.track_image_placeholder)
 
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.track_image_placeholder)
             .centerCrop()
             .transform(RoundedCorners(ROUNDING_RADIUS))
-            .into(binding.trackImage)
+            .into(binding.ivTrackImage)
 
-        binding.trackTitle.text = track.trackName
-        binding.trackOwnerName.text = track.artistName
-        binding.trackTime.text = SimpleDateFormat(
+        binding.tvTrackTitle.text = track.trackName
+        binding.tvTrackOwnerName.text = track.artistName
+        binding.tvTrackTime.text = SimpleDateFormat(
             "mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
     }
 

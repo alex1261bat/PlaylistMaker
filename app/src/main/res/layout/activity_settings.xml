@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/settingsBackButton"
+        android:id="@+id/tb_settingsBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-16dp"
@@ -16,7 +16,7 @@
         app:title="@string/settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/themeSwitcher"
+        android:id="@+id/sm_themeSwitcher"
         style="@style/SettingsTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:text="@string/dark_theme" />
 
     <FrameLayout
-        android:id="@+id/shareButton"
+        android:id="@+id/fl_share"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -39,7 +39,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/sendToSupportButton"
+        android:id="@+id/fl_sendToSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -53,7 +53,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/userAgreementButton"
+        android:id="@+id/fl_userAgreement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

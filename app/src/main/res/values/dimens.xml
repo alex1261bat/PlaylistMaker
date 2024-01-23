@@ -43,4 +43,5 @@
     <dimen name="search_padding_start_12dp">12dp</dimen>
     <dimen name="search_icon_padding_8dp">8dp</dimen>
     <dimen name="media_back_arrow_start_padding">-20dp</dimen>
+    <dimen name="media_placeholder_margin_top_104dp">104dp</dimen>
 </resources>

@@ -32,9 +32,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding?.apply {
-            binding?.searchBackButton?.setOnClickListener { finish() }
-            updateButton.setOnClickListener { viewModel.clickUpdateButton() }
-            clearIcon.setOnClickListener { viewModel.clickClearIcon() }
+            binding?.tbSearchBack?.setOnClickListener { finish() }
+            ivUpdate.setOnClickListener { viewModel.clickUpdateButton() }
+            ivClearIcon.setOnClickListener { viewModel.clickClearIcon() }
             initHistoryListRecyclerView()
             initTrackListRecyclerView()
         }
@@ -45,16 +45,16 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initTrackListRecyclerView() {
         trackAdapter = TrackAdapter(viewModel::clickTrack)
-        binding?.trackRecyclerView?.adapter = trackAdapter
+        binding?.rvTrackList?.adapter = trackAdapter
     }
 
     private fun initHistoryListRecyclerView() {
         historyAdapter = TrackAdapter(viewModel::clickTrack)
-        binding?.trackHistoryRecyclerView?.adapter = historyAdapter
+        binding?.rvHistoryList?.adapter = historyAdapter
     }
 
     private fun initSearchEditText(): EditText? {
-        return binding?.searchEditText?.apply {
+        return binding?.etSearch?.apply {
             doOnTextChanged { text, _, _, _ ->
                 viewModel.searchRequestIsChanged(text?.toString()?.trim() ?: "")
             }
@@ -72,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initClearHistoryButton() {
-        binding?.clearHistoryButton?.setOnClickListener {
+        binding?.ivClearHistory?.setOnClickListener {
             viewModel.clickClearHistoryButton() }
     }
 
@@ -80,16 +80,16 @@ class SearchActivity : AppCompatActivity() {
         viewModel.state.observe(this) {
             binding?.apply {
                 trackAdapter?.updateData(it.trackList)
-                trackRecyclerView.isVisible = it.trackList.isNotEmpty()
+                rvTrackList.isVisible = it.trackList.isNotEmpty()
                 historyAdapter?.updateData(it.searchHistoryList)
-                trackHistoryRecyclerView.isVisible = (it.searchHistoryList.isNotEmpty()
+                rvHistoryList.isVisible = (it.searchHistoryList.isNotEmpty()
                         && it.historyVisibility)
-                clearIcon.isVisible = it.clearIconVisibility
-                clearHistoryButton.isVisible = it.clearHistoryButtonVisibility
-                youSearched.isVisible = it.youSearchedVisibility
-                connectionError.isVisible = it.connectionErrorVisibility
-                nothingFound.isVisible = it.nothingFoundVisibility
-                progressBar.isVisible = it.progressBarVisibility
+                ivClearIcon.isVisible = it.clearIconVisibility
+                ivClearHistory.isVisible = it.clearHistoryButtonVisibility
+                tvYouSearched.isVisible = it.youSearchedVisibility
+                llConnectionError.isVisible = it.connectionErrorVisibility
+                tvNothingFound.isVisible = it.nothingFoundVisibility
+                pbLoading.isVisible = it.progressBarVisibility
             }
         }
 
@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
                 is SearchScreenEvent.OpenPlayerScreen -> {
                     startActivity(Intent(this, PlayerActivity()::class.java)) }
 
-                is SearchScreenEvent.ClearSearchEditText -> binding?.searchEditText?.text?.clear()
+                is SearchScreenEvent.ClearSearchEditText -> binding?.etSearch?.text?.clear()
 
                 else -> hideKeyboard()
             }
@@ -107,6 +107,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun hideKeyboard() {
         val hide = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        hide.hideSoftInputFromWindow(binding?.clearIcon?.windowToken, 0)
+        hide.hideSoftInputFromWindow(binding?.ivClearIcon?.windowToken, 0)
     }
 }

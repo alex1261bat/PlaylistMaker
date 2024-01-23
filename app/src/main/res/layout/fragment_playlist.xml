@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_empty_playlist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.media.fragments.PlaylistFragment">
+
+    <ImageView
+        android:id="@+id/iv_create_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/settings_padding_top_bottom"
+        android:src="@drawable/button_create_playlist"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
+
+    <TextView
+        style="@style/SearchPlaceholderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/media_margin_top_48dp"
+        android:text="@string/no_playlists"
+        android:textSize="@dimen/search_placeholder_text"
+        app:drawableTopCompat="@drawable/nothing_found"
+        android:visibility="visible"/>
+</LinearLayout>

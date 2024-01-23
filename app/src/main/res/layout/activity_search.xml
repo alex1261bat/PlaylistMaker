@@ -11,7 +11,7 @@
         android:paddingHorizontal="@dimen/main_activity_padding_start_end">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/searchBackButton"
+            android:id="@+id/tb_searchBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-16dp"
@@ -27,7 +27,7 @@
 
             <EditText
                 style="@style/SearchEditTextStyle"
-                android:id="@+id/searchEditText"
+                android:id="@+id/et_search"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/search_input_line"
                 android:layout_weight="1"
@@ -45,7 +45,7 @@
                 android:background="@drawable/search_linearlayout_round_corners"/>
 
             <ImageView
-                android:id="@+id/clearIcon"
+                android:id="@+id/iv_clearIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -54,7 +54,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/nothingFound"
+            android:id="@+id/tv_nothingFound"
             style="@style/SearchPlaceholderTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:visibility="gone"/>
 
         <LinearLayout
-            android:id="@+id/connectionError"
+            android:id="@+id/ll_connectionError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,7 +89,7 @@
                 android:textSize="@dimen/search_placeholder_text"/>
 
             <ImageView
-                android:id="@+id/updateButton"
+                android:id="@+id/iv_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top"
@@ -99,7 +99,7 @@
 
         <TextView
             style="@style/SearchPlaceholderTextYouSearchedStyle"
-            android:id="@+id/youSearched"
+            android:id="@+id/tv_youSearched"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/you_searched_text_margin_top"
             android:layout_height="@dimen/text_you_searched"
@@ -107,7 +107,8 @@
             android:textSize="@dimen/search_placeholder_text"
             android:visibility="gone"/>
 
-        <ProgressBar android:id="@+id/progressBar"
+        <ProgressBar
+            android:id="@+id/pb_loading"
             android:layout_width="@dimen/progress_bar_size_44dp"
             android:layout_height="@dimen/progress_bar_size_44dp"
             android:layout_marginTop="@dimen/progress_bar_margin_top_140dp"
@@ -116,7 +117,7 @@
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackRecyclerView"
+            android:id="@+id/rv_trackList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -127,7 +128,7 @@
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackHistoryRecyclerView"
+            android:id="@+id/rv_historyList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -137,13 +138,13 @@
             android:visibility="visible"/>
 
         <ImageView
-            android:id="@+id/clearHistoryButton"
+            android:id="@+id/iv_clearHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/settings_padding_top_bottom"
             android:layout_marginBottom="@dimen/search_icon_padding_8dp"
             android:src="@drawable/clear_history_button"
             android:layout_gravity="center"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>
