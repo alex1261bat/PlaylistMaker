@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/playerBackButton"
+            android:id="@+id/tb_playerBack"
             android:layout_width="46dp"
             android:layout_height="50dp"
             android:gravity="center"
@@ -22,201 +22,201 @@
             app:navigationIcon="@drawable/back_space" />
 
         <ImageView
-            android:id="@+id/trackImage"
+            android:id="@+id/iv_trackImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1:1"
             android:layout_marginTop="@dimen/media_track_image_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/playerBackButton"
+            app:layout_constraintTop_toBottomOf="@id/tb_playerBack"
             tools:src="@drawable/track_image_placeholder"/>
 
         <TextView
-            android:id="@+id/trackName"
+            android:id="@+id/tv_trackName"
             style="@style/MediaMainTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/media_text_height_28dp"
             android:layout_marginTop="@dimen/media_track_name_top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trackImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_trackImage"
             android:textSize="@dimen/media_track_name_text_size_22sp"
             tools:text="[Название трека]"
             android:lines="1"
             android:ellipsize="end"/>
 
         <TextView
-            android:id="@+id/artistName"
+            android:id="@+id/tv_artistName"
             style="@style/MediaMainTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/media_small_text_height_16dp"
             android:layout_marginTop="@dimen/media_margin_top_8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trackName"
+            app:layout_constraintTop_toBottomOf="@+id/tv_trackName"
             android:textSize="@dimen/media_text_size_14sp"
             tools:text="[Автор]"
             android:lines="1"
             android:ellipsize="end"/>
 
         <ImageButton
-            android:id="@+id/addToPlaylist"
+            android:id="@+id/ib_addToPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/media_margin_top_48dp"
             android:background="@drawable/round_button"
             android:src="@drawable/add_to_playlist"
-            app:layout_constraintStart_toStartOf="@id/artistName"
-            app:layout_constraintTop_toBottomOf="@+id/artistName" />
+            app:layout_constraintStart_toStartOf="@id/tv_artistName"
+            app:layout_constraintTop_toBottomOf="@+id/tv_artistName" />
 
         <ImageButton
-            android:id="@+id/play"
+            android:id="@+id/ib_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_play"
             android:layout_marginTop="@dimen/media_margin_top_24dp"
             android:background="@drawable/round_button"
-            app:layout_constraintStart_toEndOf="@+id/addToPlaylist"
-            app:layout_constraintEnd_toStartOf="@id/buttonLike"
-            app:layout_constraintTop_toBottomOf="@+id/artistName" />
+            app:layout_constraintStart_toEndOf="@+id/ib_addToPlaylist"
+            app:layout_constraintEnd_toStartOf="@id/ib_like"
+            app:layout_constraintTop_toBottomOf="@+id/tv_artistName" />
 
         <ImageButton
-            android:id="@+id/buttonLike"
+            android:id="@+id/ib_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/media_margin_top_48dp"
             android:background="@drawable/round_button"
             android:src="@drawable/button_like"
-            app:layout_constraintEnd_toEndOf="@id/artistName"
-            app:layout_constraintTop_toBottomOf="@id/artistName" />
+            app:layout_constraintEnd_toEndOf="@id/tv_artistName"
+            app:layout_constraintTop_toBottomOf="@id/tv_artistName" />
 
         <TextView
-            android:id="@+id/timer"
+            android:id="@+id/tv_timer"
             style="@style/MediaMainTextStyle"
             android:layout_width="@dimen/media_timer_width_100dp"
             android:layout_height="@dimen/media_small_text_height_16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/play"
+            app:layout_constraintTop_toBottomOf="@id/ib_play"
             android:textAlignment="center"
             android:textSize="@dimen/media_text_size_14sp"
             tools:text="[0:30]"/>
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/tv_time"
             style="@style/MediaTrackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/media_text_height_28dp"
             android:layout_marginTop="@dimen/media_margin_top_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timer"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer"
             android:gravity="center_vertical|start"
             android:textSize="@dimen/media_text_size_13sp"
             android:text="@string/track_time"/>
 
         <TextView
-            android:id="@+id/trackTime"
+            android:id="@+id/tv_trackTime"
             style="@style/MediaMainTrackTextStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintHorizontal_weight="1"
             android:layout_marginTop="@dimen/media_margin_top_24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timer"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer"
             android:gravity="center_vertical|end"
             android:textSize="@dimen/media_text_size_13sp"
             tools:text="[Длительность]"/>
 
         <TextView
-            android:id="@+id/album"
+            android:id="@+id/tv_album"
             style="@style/MediaTrackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackTime"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackTime"
             android:gravity="center_vertical|start"
             android:textSize="@dimen/media_text_size_13sp"
             android:text="@string/album"/>
 
         <TextView
-            android:id="@+id/trackAlbum"
+            android:id="@+id/tv_trackAlbum"
             style="@style/MediaMainTrackTextStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/album"
+            app:layout_constraintStart_toEndOf="@+id/tv_album"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackTime"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackTime"
             android:gravity="center_vertical|end"
             android:textSize="@dimen/media_text_size_13sp"
             tools:text="[Альбом]]"/>
 
         <TextView
-            android:id="@+id/year"
+            android:id="@+id/tv_year"
             style="@style/MediaTrackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/album"
+            app:layout_constraintTop_toBottomOf="@id/tv_album"
             android:gravity="center_vertical|start"
             android:textSize="@dimen/media_text_size_13sp"
             android:text="@string/year"/>
 
         <TextView
-            android:id="@+id/trackYear"
+            android:id="@+id/tv_trackYear"
             style="@style/MediaMainTrackTextStyle"
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="1"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/album"
+            app:layout_constraintTop_toBottomOf="@id/tv_album"
             android:gravity="center_vertical|end"
             android:textSize="@dimen/media_text_size_13sp"
             tools:text="[Год]"/>
 
         <TextView
-            android:id="@+id/genre"
+            android:id="@+id/tv_genre"
             style="@style/MediaTrackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackYear"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackYear"
             android:gravity="center_vertical|start"
             android:textSize="@dimen/media_text_size_13sp"
             android:text="@string/genre"/>
 
         <TextView
-            android:id="@+id/trackGenre"
+            android:id="@+id/tv_trackGenre"
             style="@style/MediaMainTrackTextStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackYear"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackYear"
             android:gravity="center_vertical|end"
             android:textSize="@dimen/media_text_size_13sp"
             tools:text="[Жанр]"/>
 
         <TextView
-            android:id="@+id/country"
+            android:id="@+id/tv_country"
             style="@style/MediaTrackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackGenre"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackGenre"
             android:gravity="center_vertical|start"
             android:textSize="@dimen/media_text_size_13sp"
             android:text="@string/country"/>
 
         <TextView
-            android:id="@+id/trackCountry"
+            android:id="@+id/tv_trackCountry"
             style="@style/MediaMainTrackTextStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/media_text_height_28dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trackGenre"
+            app:layout_constraintTop_toBottomOf="@id/tv_trackGenre"
             android:gravity="center_vertical|end"
             android:textSize="@dimen/media_text_size_13sp"
             tools:text="[Страна]"/>

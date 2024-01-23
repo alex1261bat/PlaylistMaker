@@ -9,7 +9,7 @@
     tools:context=".ui.media.MediaActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/mediaBackButton"
+        android:id="@+id/tb_mediaBack"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,16 +18,15 @@
         style="@style/MediaMainTextStyle"/>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tl_mediaTab"
         style="@style/MediaTabStyle"
         android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+        android:id="@+id/vp_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 </LinearLayout>

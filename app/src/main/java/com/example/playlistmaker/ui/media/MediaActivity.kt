@@ -18,7 +18,7 @@ class MediaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        binding?.mediaBackButton?.setNavigationOnClickListener { finish() }
+        binding?.tbMediaBack?.setNavigationOnClickListener { finish() }
         initTabLayout()
     }
 
@@ -28,8 +28,8 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun initTabLayout() = binding?.run {
-        viewPager.adapter = MediaAdapter(supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        vpMedia.adapter = MediaAdapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(tlMediaTab, vpMedia) { tab, position ->
             tab.text = getString(tabTitleIds[position])
         }
         tabMediator?.attach()

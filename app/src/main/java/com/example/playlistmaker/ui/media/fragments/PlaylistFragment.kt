@@ -26,7 +26,12 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state.observe(viewLifecycleOwner) {
-            binding?.emptyPlaylist?.isVisible = it.isEmpty()
+            binding?.llEmptyPlaylist?.isVisible = it.isEmpty()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

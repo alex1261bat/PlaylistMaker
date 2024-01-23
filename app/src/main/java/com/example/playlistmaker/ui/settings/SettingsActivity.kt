@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        binding?.settingsBackButton?.setOnClickListener {
+        binding?.tbSettingsBack?.setOnClickListener {
             finish()
         }
 
@@ -24,14 +24,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setUpButtons() {
         binding?.apply {
-            shareButton.setOnClickListener { viewModel.clickShareButton() }
-            sendToSupportButton.setOnClickListener { viewModel.clickSendToSupportButton() }
-            userAgreementButton.setOnClickListener { viewModel.clickUserAgreementButton() }
+            flShare.setOnClickListener { viewModel.clickShareButton() }
+            flSendToSupport.setOnClickListener { viewModel.clickSendToSupportButton() }
+            flUserAgreement.setOnClickListener { viewModel.clickUserAgreementButton() }
         }
     }
 
     private fun setUpThemeSwitcher() {
-        binding?.themeSwitcher?.apply {
+        binding?.smThemeSwitcher?.apply {
             viewModel.appTheme.observe(this@SettingsActivity) {
                 isChecked = it
             }

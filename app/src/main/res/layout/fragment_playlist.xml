@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/empty_playlist"
+    android:id="@+id/ll_empty_playlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.media.fragments.PlaylistFragment">
 
     <ImageView
-        android:id="@+id/button_create_playlist"
+        android:id="@+id/iv_create_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/settings_padding_top_bottom"
@@ -19,7 +19,6 @@
         android:visibility="visible"/>
 
     <TextView
-        android:id="@+id/nothingFound"
         style="@style/SearchPlaceholderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

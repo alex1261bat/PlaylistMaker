@@ -8,7 +8,7 @@
     android:paddingHorizontal="@dimen/main_activity_padding_start_end">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
@@ -18,7 +18,7 @@
         android:textColor="@color/yp_white" />
 
     <Button
-        android:id="@+id/buttonSearch"
+        android:id="@+id/btn_search"
         style="@style/MainActivityButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,7 +28,7 @@
         android:text="@string/search" />
 
     <Button
-        android:id="@+id/buttonMedia"
+        android:id="@+id/btn_media"
         style="@style/MainActivityButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,7 +37,7 @@
         android:text="@string/media" />
 
     <Button
-        android:id="@+id/buttonSettings"
+        android:id="@+id/btn_settings"
         style="@style/MainActivityButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"

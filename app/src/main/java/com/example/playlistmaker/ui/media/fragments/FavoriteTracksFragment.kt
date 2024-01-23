@@ -26,7 +26,12 @@ class FavoriteTracksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state.observe(viewLifecycleOwner) {
-            binding?.emptyMediaList?.isVisible = it.isEmpty()
+            binding?.llEmptyMediaList?.isVisible = it.isEmpty()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
