@@ -8,8 +8,6 @@ import com.example.playlistmaker.ui.search.SearchActivity
 import com.example.playlistmaker.ui.settings.SettingsActivity
 import com.example.playlistmaker.databinding.ActivityMainBinding
 
-const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
-
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {

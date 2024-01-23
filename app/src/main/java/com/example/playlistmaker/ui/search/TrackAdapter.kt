@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackCardBinding
 import com.example.playlistmaker.domain.models.Track
+import kotlin.reflect.KFunction1
 
-class TrackAdapter(private val clickTrack: (track: Track) -> Unit
+class TrackAdapter(private val clickTrack: KFunction1<Track, Unit>
 ): RecyclerView.Adapter<TrackViewHolder> () {
     private var trackList = emptyList<Track>()
 
