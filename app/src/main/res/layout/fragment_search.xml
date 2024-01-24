@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/nav_tab_background"
+    tools:context=".ui.search.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,12 +15,10 @@
         android:paddingHorizontal="@dimen/main_activity_padding_start_end">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_searchBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-16dp"
             app:buttonGravity="center_vertical"
-            app:navigationIcon="@drawable/back_space"
             app:title="@string/search" />
 
         <LinearLayout

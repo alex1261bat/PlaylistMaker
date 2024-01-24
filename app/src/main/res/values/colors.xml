@@ -12,5 +12,7 @@
     <color name="yp_grey">#AEAFB4</color>
     <color name="yp_white">#FFFFFF</color>
     <color name="yp_lightGrey">#E6E8EB</color>
+    <color name="yp_lightBlue">#9FBBF3</color>
     <color name="primary_500">#6200EE</color>
+    <color name="nav_tab_background">@color/yp_white</color>
 </resources>
