@@ -1,25 +1,35 @@
 package com.example.playlistmaker.ui.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-    private var binding: ActivitySettingsBinding? = null
+class SettingsFragment : Fragment() {
+    private var binding: FragmentSettingsBinding? = null
     private val viewModel: SettingsViewModel by viewModel<SettingsViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSettingsBinding.inflate(layoutInflater)
+        return binding?.root
+    }
 
-        binding?.tbSettingsBack?.setOnClickListener {
-            finish()
-        }
-
-        setUpThemeSwitcher()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setUpButtons()
+        setUpThemeSwitcher()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     private fun setUpButtons() {
@@ -32,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setUpThemeSwitcher() {
         binding?.smThemeSwitcher?.apply {
-            viewModel.appTheme.observe(this@SettingsActivity) {
+            viewModel.appTheme.observe(viewLifecycleOwner) {
                 isChecked = it
             }
             setOnClickListener { viewModel.clickThemeSwitcher(this.isChecked) }

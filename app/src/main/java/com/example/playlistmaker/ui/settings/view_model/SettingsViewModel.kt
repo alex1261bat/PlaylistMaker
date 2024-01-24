@@ -19,6 +19,7 @@ class SettingsViewModel(
     fun clickThemeSwitcher(isChecked: Boolean) {
         val appTheme = if (isChecked) ApplicationTheme.DARK else ApplicationTheme.LIGHT
         applicationThemeInteractor.setApplicationTheme(appTheme)
+        applicationTheme.value = applicationThemeInteractor.getApplicationTheme()
     }
 
     fun clickShareButton() = sharingInteractor.openShareLink()

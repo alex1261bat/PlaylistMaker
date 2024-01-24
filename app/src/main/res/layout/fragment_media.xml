@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.media.MediaActivity">
+    android:background="@color/nav_tab_background"
+    tools:context=".ui.media.MediaFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_mediaBack"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/back_space"
         app:title="@string/media"
         style="@style/MediaMainTextStyle"/>
 
@@ -22,7 +21,8 @@
         style="@style/MediaTabStyle"
         android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/nav_tab_background"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_media"

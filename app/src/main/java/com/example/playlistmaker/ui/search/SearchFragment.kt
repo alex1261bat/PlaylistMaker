@@ -3,36 +3,49 @@ package com.example.playlistmaker.ui.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import androidx.fragment.app.Fragment
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
-    private var binding: ActivitySearchBinding? = null
+class SearchFragment : Fragment() {
+    private var binding: FragmentSearchBinding? = null
     private var trackAdapter: TrackAdapter? = null
     private var historyAdapter: TrackAdapter? = null
     private val viewModel: SearchViewModel by viewModel<SearchViewModel>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding?.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        initObservers()
         initViews()
+        initObservers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     private fun initViews() {
         binding?.apply {
-            binding?.tbSearchBack?.setOnClickListener { finish() }
             ivUpdate.setOnClickListener { viewModel.clickUpdateButton() }
             ivClearIcon.setOnClickListener { viewModel.clickClearIcon() }
             initHistoryListRecyclerView()
@@ -77,7 +90,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.state.observe(this) {
+        viewModel.state.observe(viewLifecycleOwner) {
             binding?.apply {
                 trackAdapter?.updateData(it.trackList)
                 rvTrackList.isVisible = it.trackList.isNotEmpty()
@@ -93,10 +106,10 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.searchScreenEvent.observe(this) {
+        viewModel.searchScreenEvent.observe(viewLifecycleOwner) {
             when (it) {
                 is SearchScreenEvent.OpenPlayerScreen -> {
-                    startActivity(Intent(this, PlayerActivity()::class.java)) }
+                    startActivity(Intent(requireContext(), PlayerActivity()::class.java)) }
 
                 is SearchScreenEvent.ClearSearchEditText -> binding?.etSearch?.text?.clear()
 
@@ -106,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        val hide = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val hide = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         hide.hideSoftInputFromWindow(binding?.ivClearIcon?.windowToken, 0)
     }
 }
