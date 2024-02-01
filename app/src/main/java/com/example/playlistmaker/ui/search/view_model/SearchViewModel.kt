@@ -1,10 +1,9 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.TrackInteractor
@@ -12,20 +11,28 @@ import com.example.playlistmaker.ui.search.SearchScreenEvent
 import com.example.playlistmaker.ui.search.SearchScreenState
 import com.example.playlistmaker.util.Resource
 import com.example.playlistmaker.util.SingleLiveEvent
+import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val trackInteractor: TrackInteractor,
     private val searchHistoryInteractor: SearchHistoryInteractor
 ) : ViewModel() {
-    private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { findTrack() }
     private var searchHistoryList = listOf<Track>()
     private var trackList = listOf<Track>()
-    private var isClickAllowed = true
     private var savedText = ""
     private val searchScreenState = MutableLiveData<SearchScreenState>()
     val state: LiveData<SearchScreenState> = searchScreenState
     val searchScreenEvent = SingleLiveEvent<SearchScreenEvent>()
+    private val searchDebounce = debounce<Unit>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope,
+        false) { _ -> findTrack() }
+    private val clickTrackDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY_MILLIS, viewModelScope,
+        false) {track ->
+        searchHistoryInteractor.addTrackToHistory(track)
+        searchHistoryInteractor.saveTrackForPlaying(track)
+        searchHistoryList = searchHistoryInteractor.getHistoryList()
+        searchScreenEvent.postValue(SearchScreenEvent.OpenPlayerScreen)
+    }
 
     companion object {
         const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
@@ -36,14 +43,8 @@ class SearchViewModel(
         getHistoryList(searchHistoryInteractor)
     }
 
-    override fun onCleared() {
-        handler.removeCallbacks(searchRunnable)
-        super.onCleared()
-    }
-
     fun searchRequestIsChanged(searchRequest: String) {
         savedText = searchRequest
-        handler.removeCallbacks(searchRunnable)
 
         if (searchRequest.isNotBlank()) {
             searchScreenState.value = getCurrentScreenState()
@@ -53,7 +54,7 @@ class SearchViewModel(
                     clearHistoryButtonVisibility = false,
                     nothingFoundVisibility = false
             )
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+            searchDebounce(Unit)
         } else {
             searchScreenState.value = SearchScreenState(
                 searchHistoryList = searchHistoryList,
@@ -99,8 +100,7 @@ class SearchViewModel(
     }
 
     fun clickUpdateButton() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+        searchDebounce(Unit)
         searchScreenState.value = getCurrentScreenState().copy(
             connectionErrorVisibility = false,
             historyVisibility = false
@@ -109,34 +109,28 @@ class SearchViewModel(
 
     fun clickEnter() {
         if (savedText.isNotBlank()) {
-            handler.removeCallbacks(searchRunnable)
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+            searchDebounce(Unit)
         }
     }
 
     fun clickTrack(track: Track) {
-        clickDebounce()
-        searchHistoryInteractor.addTrackToHistory(track)
-        searchHistoryInteractor.saveTrackForPlaying(track)
-        searchHistoryList = searchHistoryInteractor.getHistoryList()
-        searchScreenEvent.value = SearchScreenEvent.OpenPlayerScreen
+        clickTrackDebounce(track)
     }
 
     private fun findTrack() {
         searchScreenState.value = getCurrentScreenState().copy(progressBarVisibility = true)
-        val trackConsumer = object : TrackInteractor.TrackConsumer {
-            override fun consume(foundTracks: Resource<List<Track>>) {
-                if (foundTracks.data.isNullOrEmpty() &&
-                    foundTracks.message == "Проверьте подключение к интернету"
-                ) {
-                    handleFailureResponse()
-                } else {
-                    handleSuccessResponse(foundTracks)
+        viewModelScope.launch {
+            trackInteractor.findTracks(savedText)
+                .collect { foundTracks ->
+                    if (foundTracks.data.isNullOrEmpty() &&
+                        foundTracks.message == "Проверьте подключение к интернету"
+                    ) {
+                        handleFailureResponse()
+                    } else {
+                        handleSuccessResponse(foundTracks)
+                    }
                 }
-            }
         }
-
-        trackInteractor.findTracks(savedText, trackConsumer)
     }
 
     private fun getHistoryList(searchHistoryInteractor: SearchHistoryInteractor) {
@@ -149,15 +143,6 @@ class SearchViewModel(
     }
 
     private fun getCurrentScreenState() = state.value ?: SearchScreenState()
-
-    private fun clickDebounce(): Boolean {
-        val currentClickIsAllowed = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
-        }
-        return currentClickIsAllowed
-    }
 
     private fun handleSuccessResponse(response: Resource<List<Track>>) {
         trackList = response.data ?: listOf()

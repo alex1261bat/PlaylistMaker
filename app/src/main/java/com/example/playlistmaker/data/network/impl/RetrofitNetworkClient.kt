@@ -7,22 +7,29 @@ import com.example.playlistmaker.data.network.ITunesSearchAPI
 import com.example.playlistmaker.data.network.NetworkClient
 import com.example.playlistmaker.data.network.Response
 import com.example.playlistmaker.data.search.model.TrackRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val context: Context,
     private val iTunesService: ITunesSearchAPI
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
 
         return if (dto is TrackRequest) {
-            val resp = iTunesService.search(dto.expression).execute()
-            val body = resp.body()?: Response()
-
-            body.apply { resultCode = resp.code() }
+            withContext(Dispatchers.IO) {
+                try {
+                    iTunesService.search(dto.expression).apply {
+                        resultCode = 200
+                    }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = 400 }
+                }
+            }
         } else {
             Response().apply { resultCode = 400 }
         }

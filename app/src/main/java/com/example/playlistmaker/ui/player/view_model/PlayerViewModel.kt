@@ -3,14 +3,16 @@ package com.example.playlistmaker.ui.player.view_model
 import android.app.Application
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.PlayerScreenState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -19,25 +21,10 @@ class PlayerViewModel(
     playerInteractor: PlayerInteractor,
     private val mediaPlayer: MediaPlayer
 ) : AndroidViewModel(application) {
-    private val handler = Handler(Looper.getMainLooper())
     private val track = playerInteractor.getTrackForPlaying()
-    private val trackTimerRunnable = object : Runnable {
-            override fun run() {
-                val time = SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(mediaPlayer.currentPosition)
-
-                if (getCurrentScreenState().playerState == MediaPlayerStatus.STATE_PLAYING) {
-                    handler.postDelayed(this, TIMER_DELAY_MILLIS)
-                    mediaPlayerState.postValue(
-                        PlayerScreenState(MediaPlayerStatus.STATE_PLAYING, track, time))
-                } else {
-                    pausePlayer()
-                }
-            }
-        }
+    private var trackTimerJob: Job? = null
     private val mediaPlayerState = MutableLiveData<PlayerScreenState>()
     val state: LiveData<PlayerScreenState> = mediaPlayerState
-
 
     companion object {
         private const val TIMER_DELAY_MILLIS = 500L
@@ -48,9 +35,7 @@ class PlayerViewModel(
         preparePlayer()
     }
 
-
     override fun onCleared() {
-        handler.removeCallbacks(trackTimerRunnable)
         mediaPlayer.release()
         super.onCleared()
     }
@@ -61,7 +46,7 @@ class PlayerViewModel(
 
     fun onStop() {
         if (getCurrentScreenState().playerState != MediaPlayerStatus.STATE_PAUSED) {
-            handler.removeCallbacks(trackTimerRunnable)
+            trackTimerJob?.cancel()
             mediaPlayer.release()
         } else {
             startPlayer()
@@ -74,8 +59,6 @@ class PlayerViewModel(
                 MediaPlayerStatus.STATE_PLAYING -> pausePlayer()
                 MediaPlayerStatus.STATE_PREPARED, MediaPlayerStatus.STATE_PAUSED -> startPlayer()
             }
-
-            handler.post(trackTimerRunnable)
         }
     }
 
@@ -104,8 +87,17 @@ class PlayerViewModel(
     private fun startPlayer() {
         if (getCurrentScreenState().playerState != MediaPlayerStatus.STATE_PLAYING) {
             mediaPlayer.start()
-            mediaPlayerState.value = getCurrentScreenState()
-                .copy(playerState = MediaPlayerStatus.STATE_PLAYING)
+            trackTimerJob?.cancel()
+            trackTimerJob = viewModelScope.launch {
+                while (mediaPlayer.isPlaying){
+                    val time = SimpleDateFormat("mm:ss", Locale.getDefault())
+                        .format(mediaPlayer.currentPosition)
+
+                    mediaPlayerState.postValue(
+                        PlayerScreenState(MediaPlayerStatus.STATE_PLAYING, track, time))
+                    delay(TIMER_DELAY_MILLIS)
+                }
+            }
         }
     }
 
