@@ -7,10 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingHorizontal="@dimen/main_activity_padding_start_end"
     tools:context=".ui.media.fragments.PlaylistFragment">
 
     <TextView
         style="@style/SearchPlaceholderTextStyle"
+        android:id="@+id/no_favorite_tracks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/media_placeholder_margin_top_104dp"
@@ -18,4 +20,15 @@
         android:textSize="@dimen/search_placeholder_text"
         app:drawableTopCompat="@drawable/nothing_found"
         android:visibility="visible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:layoutManager="LinearLayoutManager"
+        android:layout_marginTop="@dimen/margin_top"
+        android:visibility="visible"
+        tools:listitem="@layout/track_card"/>
 </LinearLayout>

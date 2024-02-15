@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.search
 
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 
 interface SearchHistoryInteractor {
     fun getHistoryList(): List<Track>

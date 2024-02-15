@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.TrackViewHolder
@@ -41,6 +41,7 @@ class PlayerActivity : AppCompatActivity() {
         binding?.apply {
             tbPlayerBack.setNavigationOnClickListener { finish() }
             ibPlay.setOnClickListener { viewModel.clickPlay() }
+            ibLike.setOnClickListener { viewModel.likeButtonClick() }
         }
     }
 
@@ -61,6 +62,10 @@ class PlayerActivity : AppCompatActivity() {
                         binding?.ibPlay?.setImageResource(R.drawable.button_play)
                 }
             }
+
+            val btnLikeResource = if (it.isFavorite) R.drawable.button_like
+                                  else R.drawable.btn_like_not_active
+            binding?.ibLike?.setImageResource(btnLikeResource)
         }
     }
 
