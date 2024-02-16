@@ -67,11 +67,13 @@ class PlayerViewModel(
     }
 
     fun likeButtonClick() {
-        viewModelScope.launch(Dispatchers.IO) {
-            track?.apply {
-                if (isFavorite) {
-                    favoriteTracksInteractor.deleteTrackFromFavorite(this)
-                } else favoriteTracksInteractor.addTrackToFavorite(this)
+        viewModelScope.launch {
+            val track = track ?: return@launch
+
+            if (track.isFavorite) {
+                favoriteTracksInteractor.deleteTrackFromFavorite(track)
+            } else {
+                favoriteTracksInteractor.addTrackToFavorite(track)
             }
         }
     }

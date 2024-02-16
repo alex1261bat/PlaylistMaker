@@ -8,7 +8,7 @@ import org.koin.dsl.module
 val dataModule = module {
 
     single<PlaylistMakerDb> {
-        Room.databaseBuilder(androidContext(), PlaylistMakerDb::class.java, "playlistMaker.db")
+        Room.databaseBuilder(androidContext(), PlaylistMakerDb::class.java, PlaylistMakerDb.DB_NAME)
             .build()
     }
 }

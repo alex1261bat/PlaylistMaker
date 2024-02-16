@@ -56,7 +56,7 @@ class FavoriteTracksFragment : Fragment() {
         viewModel.event.observe(viewLifecycleOwner) {
             when (it) {
                 is FavoriteTracksScreenEvent.OpenPlayerScreen -> {
-                    startActivity(Intent(requireContext(), PlayerActivity()::class.java))
+                    startActivity(Intent(requireContext(), PlayerActivity::class.java))
                 }
             }
         }

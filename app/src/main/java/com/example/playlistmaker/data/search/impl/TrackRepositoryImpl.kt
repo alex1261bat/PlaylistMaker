@@ -20,6 +20,7 @@ class TrackRepositoryImpl(
 
             when (response.resultCode) {
                 200 -> {
+                    val favoriteTracksIds = playlistMakerDb.trackDao().getFavoriteTracksIds()
                     val tracksList = (response as TrackResponse).results.map {
                         Track(
                             it.trackId,
@@ -31,14 +32,9 @@ class TrackRepositoryImpl(
                             it.releaseDate,
                             it.primaryGenreName,
                             it.country,
-                            it.previewUrl)
-                    }
-                    val favoriteTracksIds = playlistMakerDb.trackDao().getFavoriteTracksIds()
-
-                    for (track in tracksList) {
-                        if (track.trackId in favoriteTracksIds) {
-                            track.isFavorite = true
-                        }
+                            it.previewUrl,
+                            isFavorite = favoriteTracksIds.contains(it.trackId)
+                        )
                     }
 
                     emit(Resource.Success(tracksList))
