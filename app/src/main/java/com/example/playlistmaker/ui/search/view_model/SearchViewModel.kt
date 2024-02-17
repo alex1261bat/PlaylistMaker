@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.TrackInteractor
 import com.example.playlistmaker.ui.search.SearchScreenEvent
@@ -12,6 +12,7 @@ import com.example.playlistmaker.ui.search.SearchScreenState
 import com.example.playlistmaker.util.Resource
 import com.example.playlistmaker.util.SingleLiveEvent
 import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -119,7 +120,7 @@ class SearchViewModel(
 
     private fun findTrack() {
         searchScreenState.value = getCurrentScreenState().copy(progressBarVisibility = true)
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             trackInteractor.findTracks(savedText)
                 .collect { foundTracks ->
                     if (foundTracks.data.isNullOrEmpty() &&

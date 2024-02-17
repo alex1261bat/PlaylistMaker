@@ -27,5 +27,6 @@
         app:itemIconTint="@color/bnm_tab_color"
         app:itemTextColor="@color/bnm_tab_color"
         app:itemBackground="@color/nav_tab_background"
+        android:outlineAmbientShadowColor="@color/yp_lightGrey"
         app:menu="@menu/bottom_navigation_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

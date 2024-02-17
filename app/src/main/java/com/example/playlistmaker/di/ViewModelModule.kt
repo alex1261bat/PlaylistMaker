@@ -16,7 +16,8 @@ val viewModelModule = module {
         PlayerViewModel(
             androidApplication(),
             playerInteractor = get(),
-            mediaPlayer = MediaPlayer()
+            mediaPlayer = MediaPlayer(),
+            favoriteTracksInteractor = get()
         )
     }
 
@@ -35,7 +36,7 @@ val viewModelModule = module {
     }
 
     viewModel<FavoriteTracksViewModel> {
-        FavoriteTracksViewModel()
+        FavoriteTracksViewModel(get())
     }
 
     viewModel<PlaylistViewModel> {

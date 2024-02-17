@@ -109,7 +109,7 @@ class SearchFragment : Fragment() {
         viewModel.searchScreenEvent.observe(viewLifecycleOwner) {
             when (it) {
                 is SearchScreenEvent.OpenPlayerScreen -> {
-                    startActivity(Intent(requireContext(), PlayerActivity()::class.java)) }
+                    startActivity(Intent(requireContext(), PlayerActivity::class.java)) }
 
                 is SearchScreenEvent.ClearSearchEditText -> binding?.etSearch?.text?.clear()
 

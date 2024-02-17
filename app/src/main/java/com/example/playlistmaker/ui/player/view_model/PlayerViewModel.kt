@@ -7,9 +7,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.db.FavoriteTracksInteractor
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
 import com.example.playlistmaker.ui.player.PlayerScreenState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,9 +21,10 @@ import java.util.Locale
 class PlayerViewModel(
     application: Application,
     playerInteractor: PlayerInteractor,
-    private val mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : AndroidViewModel(application) {
-    private val track = playerInteractor.getTrackForPlaying()
+    private var track = playerInteractor.getTrackForPlaying()
     private var trackTimerJob: Job? = null
     private val mediaPlayerState = MutableLiveData<PlayerScreenState>()
     val state: LiveData<PlayerScreenState> = mediaPlayerState
@@ -32,6 +35,7 @@ class PlayerViewModel(
 
     init {
         mediaPlayerState.value = PlayerScreenState(MediaPlayerStatus.STATE_PAUSED, track)
+        subscribeOnFavoriteTracks()
         preparePlayer()
     }
 
@@ -58,6 +62,18 @@ class PlayerViewModel(
             when (getCurrentScreenState().playerState) {
                 MediaPlayerStatus.STATE_PLAYING -> pausePlayer()
                 MediaPlayerStatus.STATE_PREPARED, MediaPlayerStatus.STATE_PAUSED -> startPlayer()
+            }
+        }
+    }
+
+    fun likeButtonClick() {
+        viewModelScope.launch {
+            val track = track ?: return@launch
+
+            if (track.isFavorite) {
+                favoriteTracksInteractor.deleteTrackFromFavorite(track)
+            } else {
+                favoriteTracksInteractor.addTrackToFavorite(track)
             }
         }
     }
@@ -108,4 +124,19 @@ class PlayerViewModel(
     }
 
     private fun getCurrentScreenState() = mediaPlayerState.value ?: PlayerScreenState()
+
+    private fun subscribeOnFavoriteTracks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoriteTracksInteractor.getFavoriteTracks().collect { favoriteTracks ->
+                track?.let {
+                    track = it.copy(isFavorite = it.trackId in favoriteTracks.map { track ->
+                        track.trackId
+                    }.toSet())
+                    mediaPlayerState.postValue(
+                        getCurrentScreenState().copy(isFavorite = track?.isFavorite ?: false)
+                    )
+                }
+            }
+        }
+    }
 }

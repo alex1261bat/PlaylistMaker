@@ -1,6 +1,7 @@
 package com.example.playlistmaker.app
 
 import android.app.Application
+import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.interactorModule
 import com.example.playlistmaker.di.navigatorModule
 import com.example.playlistmaker.di.networkModule
@@ -16,6 +17,7 @@ class App: Application() {
         startKoin {
             androidContext(this@App)
             modules(
+                dataModule,
                 interactorModule,
                 navigatorModule,
                 networkModule,
