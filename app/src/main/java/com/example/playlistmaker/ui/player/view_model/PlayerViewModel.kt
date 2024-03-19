@@ -8,13 +8,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.example.playlistmaker.domain.db.PlaylistInteractor
+import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.player.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.MediaPlayerStatus
+import com.example.playlistmaker.ui.player.PlayerScreenEvent
 import com.example.playlistmaker.ui.player.PlayerScreenState
+import com.example.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,12 +27,16 @@ class PlayerViewModel(
     application: Application,
     playerInteractor: PlayerInteractor,
     private val mediaPlayer: MediaPlayer,
-    private val favoriteTracksInteractor: FavoriteTracksInteractor
+    private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : AndroidViewModel(application) {
     private var track = playerInteractor.getTrackForPlaying()
     private var trackTimerJob: Job? = null
     private val mediaPlayerState = MutableLiveData<PlayerScreenState>()
     val state: LiveData<PlayerScreenState> = mediaPlayerState
+    private val mediaPlayerPlaylists = MutableLiveData<List<Playlist>>(listOf())
+    val playlists: LiveData<List<Playlist>> = mediaPlayerPlaylists
+    val event = SingleLiveEvent<PlayerScreenEvent>()
 
     companion object {
         private const val TIMER_DELAY_MILLIS = 500L
@@ -37,6 +46,7 @@ class PlayerViewModel(
         mediaPlayerState.value = PlayerScreenState(MediaPlayerStatus.STATE_PAUSED, track)
         subscribeOnFavoriteTracks()
         preparePlayer()
+        subscribeOnPlaylists()
     }
 
     override fun onCleared() {
@@ -75,6 +85,36 @@ class PlayerViewModel(
             } else {
                 favoriteTracksInteractor.addTrackToFavorite(track)
             }
+        }
+    }
+
+    fun addButtonClick() {
+        event.value = PlayerScreenEvent.OpenPlaylistsBottomSheet
+    }
+
+    fun createPlaylistButtonClick() {
+        event.postValue(PlayerScreenEvent.NavigateToCreatePlaylistFragment)
+    }
+
+    fun playlistClick(playlist: Playlist) {
+        track?.let {
+            if (it.trackId !in playlist.tracksIds.toSet()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    playlistInteractor.updatePlaylist(playlist, it)
+                    withContext(Dispatchers.Main) {
+                        event.value = PlayerScreenEvent.ClosePlaylistsBottomSheet
+                        event.value = PlayerScreenEvent.ShowAddedTrackMessage(playlist.title)
+                    }
+                }
+            } else {
+                event.value = PlayerScreenEvent.ShowTrackAlreadyInPlaylistMessage(playlist.title)
+            }
+        }
+    }
+
+    private fun subscribeOnPlaylists() {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.getPlaylists().collect { mediaPlayerPlaylists.postValue(it) }
         }
     }
 

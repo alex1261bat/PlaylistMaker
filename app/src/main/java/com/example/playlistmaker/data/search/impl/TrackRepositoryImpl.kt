@@ -20,7 +20,7 @@ class TrackRepositoryImpl(
 
             when (response.resultCode) {
                 200 -> {
-                    val favoriteTracksIds = playlistMakerDb.trackDao().getFavoriteTracksIds()
+                    val favoriteTracksIds = playlistMakerDb.favoriteTracksDao().getFavoriteTracksIds()
                     val tracksList = (response as TrackResponse).results.map {
                         Track(
                             it.trackId,

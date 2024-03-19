@@ -15,4 +15,8 @@
     <color name="yp_lightBlue">#9FBBF3</color>
     <color name="primary_500">#6200EE</color>
     <color name="nav_tab_background">@color/yp_white</color>
+    <color name="colorTopView">#E6E8EB</color>
+    <color name="colorBottomSheetBackground">#FFFFFF</color>
+    <color name="colorBottomSheetOverlay">#99000000</color>
+    <color name="npl_text_input">#1A1B22</color>
 </resources>

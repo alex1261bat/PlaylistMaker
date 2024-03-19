@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.db.impl
 
-import com.example.playlistmaker.data.db.FavoriteTracksRepository
+import com.example.playlistmaker.data.db.repository.FavoriteTracksRepository
 import com.example.playlistmaker.data.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.db.FavoriteTracksInteractor
 import com.example.playlistmaker.domain.model.Track

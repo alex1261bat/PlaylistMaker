@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_empty_playlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.media.fragments.PlaylistFragment">
 
     <ImageView
-        android:id="@+id/iv_create_playlist"
+        android:id="@+id/iv_new_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/settings_padding_top_bottom"
@@ -19,12 +18,21 @@
         android:visibility="visible"/>
 
     <TextView
+        android:id="@+id/ll_empty_playlist"
         style="@style/SearchPlaceholderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/media_margin_top_48dp"
         android:text="@string/no_playlists"
         android:textSize="@dimen/search_placeholder_text"
-        app:drawableTopCompat="@drawable/nothing_found"
-        android:visibility="visible"/>
+        app:drawableTopCompat="@drawable/nothing_found"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/item_playlist"/>
 </LinearLayout>

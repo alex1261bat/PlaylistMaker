@@ -44,4 +44,27 @@
     <dimen name="search_icon_padding_8dp">8dp</dimen>
     <dimen name="media_back_arrow_start_padding">-20dp</dimen>
     <dimen name="media_placeholder_margin_top_104dp">104dp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_11sp">11sp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="image_size_160dp">160dp</dimen>
+    <dimen name="image_size_280dp">280dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="image_size_312dp">312dp</dimen>
+    <dimen name="margin_32dp">32dp</dimen>
+    <dimen name="line_height_16dp">16dp</dimen>
+    <dimen name="padding_14dp">14dp</dimen>
+    <dimen name="text_size_14sp">14sp</dimen>
+    <dimen name="radius_56dp">56dp</dimen>
+    <dimen name="size_500dp">500dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="size_52dp">52dp</dimen>
+    <dimen name="size_4dp">4dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="text_size_19sp">19sp</dimen>
+    <dimen name="size_36dp">36dp</dimen>
 </resources>
