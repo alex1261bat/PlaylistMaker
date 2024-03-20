@@ -135,16 +135,16 @@ class PlayerFragment : Fragment() {
     }
 
     private fun bindTrack(track: Track) {
-        binding?.tvTrackName?.text = track.trackName
-        binding?.tvArtistName?.text = track.artistName
-        binding?.tvTrackTime?.text = SimpleDateFormat("mm:ss", Locale.getDefault())
-            .format(track.trackTime.toLong()).orEmpty()
-
-        binding?.tvTrackAlbum?.text = track.collectionName.orEmpty()
-        binding?.tvTrackYear?.text = track.releaseDate?.substring(0, 4).orEmpty()
-
-        binding?.tvTrackGenre?.text = track.primaryGenreName
-        binding?.tvTrackCountry?.text = track.country
+        binding?.run {
+            tvTrackName.text = track.trackName
+            tvArtistName.text = track.artistName
+            tvTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault())
+                .format(track.trackTime.toLong()).orEmpty()
+            tvTrackAlbum.text = track.collectionName.orEmpty()
+            tvTrackYear.text = track.releaseDate?.substring(0, 4).orEmpty()
+            tvTrackGenre.text = track.primaryGenreName
+            tvTrackCountry.text = track.country
+        }
 
         if (track.artworkUrl100.isNotEmpty()) {
             binding?.ivTrackImage?.setImageResource(R.drawable.track_image_placeholder)

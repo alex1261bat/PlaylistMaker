@@ -12,7 +12,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class PlaylistCoverRepositoryImpl(private val context: Context) : PlaylistCoverRepository {
-    companion object {
+    private companion object {
         const val DIRECTORY_NAME = "playlist_maker"
         const val FILE_NAME = "playlist_cover"
         const val FILE_EXTENSION = ".jpg"
@@ -40,9 +40,8 @@ class PlaylistCoverRepositoryImpl(private val context: Context) : PlaylistCoverR
         withContext(Dispatchers.IO) {
             inputStream?.close()
         }
-        withContext(Dispatchers.IO) {
-            outputStream.close()
-        }
+
+        outputStream.close()
 
         return file.toString()
     }

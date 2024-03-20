@@ -38,7 +38,7 @@ class PlayerViewModel(
     val playlists: LiveData<List<Playlist>> = mediaPlayerPlaylists
     val event = SingleLiveEvent<PlayerScreenEvent>()
 
-    companion object {
+    private companion object {
         private const val TIMER_DELAY_MILLIS = 500L
     }
 

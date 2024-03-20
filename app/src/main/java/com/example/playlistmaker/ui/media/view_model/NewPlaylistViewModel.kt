@@ -18,10 +18,6 @@ class NewPlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
-    companion object {
-        const val KEY_PLAYLIST_COVER_URI = "key_playlist_cover_uri"
-    }
-
     private var playlistTitle = ""
     private var playlistDescription: String? = null
     private val playlistCoverUri: MutableLiveData<Uri?> = MutableLiveData()

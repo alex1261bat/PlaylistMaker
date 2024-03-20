@@ -18,9 +18,10 @@ class PlaylistRepositoryImpl(
     }
 
     override suspend fun updatePlaylist(playlist: Playlist, track: Track) {
-        val tracksIds = playlist.tracksIds.toMutableList()
-        tracksIds.add(track.trackId)
-        val newPlaylist = playlist.copy(tracksIds = tracksIds, tracksCount = playlist.tracksCount + 1)
+        val newPlaylist = playlist.copy(
+            tracksIds = playlist.tracksIds + track.trackId,
+            tracksCount = playlist.tracksCount + 1
+        )
 
         playlistMakerDb.playlistDao().updatePlaylist(
             playlistMakerDbConverter.mapToPlaylistEntity(newPlaylist))

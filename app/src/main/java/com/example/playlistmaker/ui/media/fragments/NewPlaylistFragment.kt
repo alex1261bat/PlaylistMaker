@@ -16,7 +16,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.ui.media.NewPlaylistEvent
 import com.example.playlistmaker.ui.media.view_model.NewPlaylistViewModel
-import com.example.playlistmaker.ui.media.view_model.NewPlaylistViewModel.Companion.KEY_PLAYLIST_COVER_URI
 import com.example.playlistmaker.util.ResultKeyHolder
 import com.example.playlistmaker.util.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,6 +28,10 @@ class NewPlaylistFragment : Fragment() {
     private val viewModel: NewPlaylistViewModel by viewModel<NewPlaylistViewModel>()
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         it?.let { uri -> viewModel.playlistCoverSelected(uri) }
+    }
+
+    private companion object {
+        const val KEY_PLAYLIST_COVER_URI = "key_playlist_cover_uri"
     }
 
     override fun onCreateView(
