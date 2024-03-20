@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="nav_tab_background">@color/yp_black</color>
+    <color name="colorTopView">#FFFFFF</color>
+    <color name="colorBottomSheetBackground">#1A1B22</color>
+    <color name="colorBottomSheetOverlay">#99000000</color>
+    <color name="npl_text_input">#FFFFFF</color>
 </resources>

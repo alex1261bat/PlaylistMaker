@@ -1,6 +1,6 @@
 package com.example.playlistmaker.data.db.impl
 
-import com.example.playlistmaker.data.db.FavoriteTracksRepository
+import com.example.playlistmaker.data.db.repository.FavoriteTracksRepository
 import com.example.playlistmaker.data.db.PlaylistMakerDb
 import com.example.playlistmaker.data.db.converters.PlaylistMakerDbConverter
 import com.example.playlistmaker.domain.model.Track
@@ -13,16 +13,16 @@ class FavoriteTracksRepositoryImpl(
 ) : FavoriteTracksRepository {
 
     override suspend fun addTrackToFavorite(track: Track) {
-        playlistMakerDb.trackDao().addTrackToFavorite(
-            playlistMakerDbConverter.mapToTrackEntity(track, System.currentTimeMillis()))
+        playlistMakerDb.favoriteTracksDao().addTrackToFavorite(
+            playlistMakerDbConverter.mapToFavoriteTracksEntity(track, System.currentTimeMillis()))
     }
 
     override suspend fun deleteTrackFromFavorite(track: Track) {
-        playlistMakerDb.trackDao().deleteTrackFromFavorite(playlistMakerDbConverter.mapToTrackEntity(track))
+        playlistMakerDb.favoriteTracksDao().deleteTrackFromFavorite(playlistMakerDbConverter.mapToFavoriteTracksEntity(track))
     }
 
     override suspend fun getFavoriteTracks(): Flow<List<Track>> {
-        return playlistMakerDb.trackDao().getFavoriteTracks().map {
+        return playlistMakerDb.favoriteTracksDao().getFavoriteTracks().map {
             it.map { trackEntity -> playlistMakerDbConverter.mapToTrack(trackEntity) }
         }
     }
