@@ -21,8 +21,8 @@ class EditPlaylistViewModel(
     playlistInteractor
 ) {
 
-    private companion object {
-        const val KEY_PLAYLIST = "editPlaylist"
+    companion object {
+        private const val KEY_PLAYLIST = "playlist"
     }
 
     private val playlist = MutableLiveData<Playlist>()

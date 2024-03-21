@@ -76,7 +76,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
             "${index + 1}. " +
                     "${track.artistName} - " +
                     "${track.trackName} " +
-                    "(${SimpleDateFormat("mm", Locale.getDefault()).format(track.trackTime)})\n"
+                    "(${SimpleDateFormat("mm", Locale.getDefault()).format(track.trackTime.toLong())})\n"
         }.joinToString(separator = "")
     }
 }
