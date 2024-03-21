@@ -14,8 +14,10 @@ data class FavoriteTracksEntity(
     val artistName: String,
     @ColumnInfo("track_time_millis")
     val trackTime: String,
-    @ColumnInfo("artwork_url")
+    @ColumnInfo("artwork_url_100")
     val artworkUrl100: String,
+    @ColumnInfo("artwork_url_60")
+    val artworkUrl60: String,
     @ColumnInfo("collection_name")
     val collectionName: String?,
     @ColumnInfo("release_date")

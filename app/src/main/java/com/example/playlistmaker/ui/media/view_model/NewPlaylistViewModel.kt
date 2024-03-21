@@ -13,20 +13,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NewPlaylistViewModel(
+open class NewPlaylistViewModel(
     private val bottomNavigationInteractor: BottomNavigationInteractor,
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
-    private var playlistTitle = ""
-    private var playlistDescription: String? = null
-    private val playlistCoverUri: MutableLiveData<Uri?> = MutableLiveData()
+    protected var playlistTitle = ""
+    protected var playlistDescription: String? = null
+    protected val playlistCoverUri: MutableLiveData<Uri?> = MutableLiveData()
     val playlistCover: LiveData<Uri?> = playlistCoverUri
     private val isButtonCreateEnabled = MutableLiveData(false)
     val buttonCreateEnabled: LiveData<Boolean> = isButtonCreateEnabled
     val playlistEvent = SingleLiveEvent<NewPlaylistEvent>()
 
-    fun onBackPressed() {
+    open fun onBackPressed() {
         if (checkPlaylistCreationIsNotFinished()) {
             playlistEvent.value = NewPlaylistEvent.ShowBackConfirmationDialog
         } else {
@@ -43,7 +43,7 @@ class NewPlaylistViewModel(
         playlistDescription = description
     }
 
-    fun createPlaylistClick() {
+    open fun completeButtonClick() {
         if (playlistTitle.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 playlistInteractor.addPlaylist(

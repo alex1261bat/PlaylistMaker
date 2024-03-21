@@ -19,4 +19,8 @@
     <color name="colorBottomSheetBackground">#FFFFFF</color>
     <color name="colorBottomSheetOverlay">#99000000</color>
     <color name="npl_text_input">#1A1B22</color>
+    <color name="colorPlaylistBackground">#E6E8EB</color>
+    <color name="colorCommonText">#1A1B22</color>
+    <color name="colorText">#FF000000</color>
+    <color name="colorTextToolbar">#1A1B22</color>
 </resources>

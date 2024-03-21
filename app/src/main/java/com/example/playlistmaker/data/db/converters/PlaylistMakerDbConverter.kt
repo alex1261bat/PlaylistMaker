@@ -1,11 +1,10 @@
 package com.example.playlistmaker.data.db.converters
 
-import com.example.playlistmaker.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.db.entity.FavoriteTracksEntity
+import com.example.playlistmaker.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.db.entity.PlaylistTracksEntity
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.util.ListConverter
 
 class PlaylistMakerDbConverter {
 
@@ -16,6 +15,7 @@ class PlaylistMakerDbConverter {
             artistName = track.artistName,
             trackTime = track.trackTime,
             artworkUrl100 = track.artworkUrl100,
+            artworkUrl60 = track.artworkUrl60,
             collectionName = track.collectionName,
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
@@ -32,6 +32,7 @@ class PlaylistMakerDbConverter {
             artistName = favoriteTracksEntity.artistName,
             trackTime = favoriteTracksEntity.trackTime,
             artworkUrl100 = favoriteTracksEntity.artworkUrl100,
+            artworkUrl60 = favoriteTracksEntity.artworkUrl60,
             collectionName = favoriteTracksEntity.collectionName,
             releaseDate = favoriteTracksEntity.releaseDate,
             primaryGenreName = favoriteTracksEntity.primaryGenreName,
@@ -70,11 +71,30 @@ class PlaylistMakerDbConverter {
             artistName = track.artistName,
             trackTime = track.trackTime,
             artworkUrl100 = track.artworkUrl100,
+            artworkUrl60 = track.artworkUrl60,
             collectionName = track.collectionName,
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            createdAt = System.currentTimeMillis()
+        )
+    }
+
+    fun mapToTrackFromPlaylistTracksEntity(playlistTracksEntity: PlaylistTracksEntity): Track {
+        return Track(
+            trackId = playlistTracksEntity.id,
+            trackName = playlistTracksEntity.trackName,
+            artistName = playlistTracksEntity.artistName,
+            trackTime = playlistTracksEntity.trackTime,
+            artworkUrl100 = playlistTracksEntity.artworkUrl100,
+            artworkUrl60 = playlistTracksEntity.artworkUrl60,
+            collectionName = playlistTracksEntity.collectionName,
+            releaseDate = playlistTracksEntity.releaseDate,
+            primaryGenreName = playlistTracksEntity.primaryGenreName,
+            country = playlistTracksEntity.country,
+            previewUrl = playlistTracksEntity.previewUrl,
+            isFavorite = true
         )
     }
 }

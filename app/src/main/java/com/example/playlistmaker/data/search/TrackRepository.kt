@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
     fun findTracks(expression: String): Flow<Resource<List<Track>>>
+    suspend fun deleteTrack(trackId: String)
 }

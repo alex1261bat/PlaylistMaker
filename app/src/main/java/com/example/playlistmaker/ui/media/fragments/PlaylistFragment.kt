@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlaylistFragment : Fragment() {
     private var binding: FragmentPlaylistBinding? = null
     private val viewModel: PlaylistViewModel by viewModel<PlaylistViewModel>()
-    private val playlistAdapter: PlaylistAdapter = PlaylistAdapter()
+    private lateinit var playlistAdapter: PlaylistAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +39,7 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        initPlaylistsRecycler()
         binding?.ivNewPlaylist?.setOnClickListener { viewModel.newPlaylistButtonClick() }
         binding?.rvPlaylists?.adapter = playlistAdapter
     }
@@ -58,6 +59,7 @@ class PlaylistFragment : Fragment() {
         viewModel.playlistEvent.observe(viewLifecycleOwner) {
             when (it) {
                 PlaylistScreenEvent.NavigateToNewPlaylist -> navigateToNewPlaylist()
+                is PlaylistScreenEvent.NavigateToPlaylistData -> navigateToPlaylistData(it.playlistId)
             }
         }
     }
@@ -67,9 +69,19 @@ class PlaylistFragment : Fragment() {
             .navigate(R.id.action_mediaFragment_to_newPlaylistFragment)
     }
 
+    private fun navigateToPlaylistData(playlistId: String) {
+        val action = MediaFragmentDirections.actionMediaFragmentToPlaylistDataFragment(playlistId)
+        findNavController().navigate(action)
+    }
+
     private fun showPlaylistCreatedMessage(playlistName: String) {
         Toast.makeText(requireContext(), getString(R.string.playlist_created_snackbar, playlistName),
             Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun initPlaylistsRecycler() {
+        playlistAdapter = PlaylistAdapter(viewModel::playlistClicked)
+        binding?.rvPlaylists?.adapter = playlistAdapter
     }
 }

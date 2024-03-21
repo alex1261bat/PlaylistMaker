@@ -100,7 +100,7 @@ class PlayerViewModel(
         track?.let {
             if (it.trackId !in playlist.tracksIds.toSet()) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    playlistInteractor.updatePlaylist(playlist, it)
+                    playlistInteractor.addTrackToPlaylist(playlist, it)
                     withContext(Dispatchers.Main) {
                         event.value = PlayerScreenEvent.ClosePlaylistsBottomSheet
                         event.value = PlayerScreenEvent.ShowAddedTrackMessage(playlist.title)

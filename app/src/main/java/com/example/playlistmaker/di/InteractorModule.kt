@@ -45,7 +45,7 @@ val interactorModule = module {
     }
 
     single<PlaylistInteractor> {
-        PlaylistInteractorImpl(get(), get())
+        PlaylistInteractorImpl(get(), get(), get(), get())
     }
 
     single<BottomNavigationInteractor> {

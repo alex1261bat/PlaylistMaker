@@ -28,6 +28,7 @@ class TrackRepositoryImpl(
                             it.artistName,
                             it.trackTime,
                             it.artworkUrl100,
+                            it.artworkUrl60,
                             it.collectionName,
                             it.releaseDate,
                             it.primaryGenreName,
@@ -48,4 +49,6 @@ class TrackRepositoryImpl(
             }
         }
     }
+
+    override suspend fun deleteTrack(trackId: String) = playlistMakerDb.playlistTracksDao().deleteTrack(trackId)
 }
