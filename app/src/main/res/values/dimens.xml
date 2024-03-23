@@ -67,4 +67,10 @@
     <dimen name="margin_12dp">12dp</dimen>
     <dimen name="text_size_19sp">19sp</dimen>
     <dimen name="size_36dp">36dp</dimen>
+    <dimen name="height_60dp">60dp</dimen>
+    <dimen name="text_size_24sp">24sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="size_380dp">380dp</dimen>
+    <dimen name="size_264dp">264dp</dimen>
+    <dimen name="size_24dp">24dp</dimen>
 </resources>

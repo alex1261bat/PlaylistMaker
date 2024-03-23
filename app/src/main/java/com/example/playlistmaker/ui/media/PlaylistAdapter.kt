@@ -10,7 +10,7 @@ import com.example.playlistmaker.databinding.ItemPlaylistBinding
 import com.example.playlistmaker.domain.model.Playlist
 import com.example.playlistmaker.util.load
 
-class PlaylistAdapter :
+class PlaylistAdapter(private val playlistClicked: (playlistId: String) -> Unit) :
     ListAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder>(PlaylistDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
@@ -28,6 +28,7 @@ class PlaylistAdapter :
 
         fun bind(playlist: Playlist) {
             with(binding) {
+                root.setOnClickListener { playlistClicked(playlist.id) }
                 playlist.playlistCoverUri?.let { ivCover.load(it) }
                 textTitle.text = playlist.title
                 textTracksCount.text = getTracksCountText(playlist.tracksCount)

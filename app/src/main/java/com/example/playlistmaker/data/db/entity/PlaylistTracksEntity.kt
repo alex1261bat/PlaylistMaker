@@ -14,8 +14,10 @@ data class PlaylistTracksEntity(
     val artistName: String,
     @ColumnInfo("track_time_millis")
     val trackTime: String,
-    @ColumnInfo("artwork_url")
+    @ColumnInfo("artwork_url_100")
     val artworkUrl100: String,
+    @ColumnInfo("artwork_url_60")
+    val artworkUrl60: String,
     @ColumnInfo("collection_name")
     val collectionName: String?,
     @ColumnInfo("release_date")
@@ -25,5 +27,7 @@ data class PlaylistTracksEntity(
     @ColumnInfo("country")
     val country: String,
     @ColumnInfo("preview_url")
-    val previewUrl: String?
+    val previewUrl: String?,
+    @ColumnInfo("created_at")
+    val createdAt: Long
 )

@@ -22,10 +22,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private var binding: FragmentNewPlaylistBinding? = null
-    private val viewModel: NewPlaylistViewModel by viewModel<NewPlaylistViewModel>()
+    protected var binding: FragmentNewPlaylistBinding? = null
+    protected open val viewModel: NewPlaylistViewModel by viewModel<NewPlaylistViewModel>()
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         it?.let { uri -> viewModel.playlistCoverSelected(uri) }
     }
@@ -53,6 +53,8 @@ class NewPlaylistFragment : Fragment() {
         setupClickListeners()
         setupBackPressHandling()
         initObservers()
+        initToolbar()
+        initCompleteButton()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -63,6 +65,18 @@ class NewPlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    protected open fun initToolbar() {
+        binding?.toolbar?.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    protected open fun initCompleteButton() {
+        binding?.apply {
+            btnComplete.setOnClickListener { viewModel.completeButtonClick() }
+        }
     }
 
     private fun setupTextListeners() {
@@ -79,7 +93,6 @@ class NewPlaylistFragment : Fragment() {
             ibCover.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
-            btnCreate.setOnClickListener { viewModel.createPlaylistClick() }
         }
     }
 
@@ -96,7 +109,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.buttonCreateEnabled.observe(viewLifecycleOwner) {
-            binding?.btnCreate?.isEnabled = it
+            binding?.btnComplete?.isEnabled = it
         }
 
         viewModel.playlistCover.observe(viewLifecycleOwner) {

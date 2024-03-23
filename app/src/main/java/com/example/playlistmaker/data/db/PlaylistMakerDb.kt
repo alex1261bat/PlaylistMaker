@@ -11,7 +11,7 @@ import com.example.playlistmaker.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.db.entity.PlaylistTracksEntity
 import com.example.playlistmaker.util.ListConverter
 
-@Database(version = 2,
+@Database(version = 3,
           entities = [FavoriteTracksEntity::class,
                       PlaylistEntity::class,
                       PlaylistTracksEntity::class])

@@ -2,8 +2,10 @@ package com.example.playlistmaker.di
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.ui.main.view_model.MainViewModel
+import com.example.playlistmaker.ui.media.view_model.EditPlaylistViewModel
 import com.example.playlistmaker.ui.media.view_model.FavoriteTracksViewModel
 import com.example.playlistmaker.ui.media.view_model.NewPlaylistViewModel
+import com.example.playlistmaker.ui.media.view_model.PlaylistDataViewModel
 import com.example.playlistmaker.ui.media.view_model.PlaylistViewModel
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
@@ -52,5 +54,13 @@ val viewModelModule = module {
 
     viewModel<NewPlaylistViewModel> {
         NewPlaylistViewModel(get(), get())
+    }
+
+    viewModel<PlaylistDataViewModel> {
+        PlaylistDataViewModel(get(), get(), get(), get())
+    }
+
+    viewModel<EditPlaylistViewModel> {
+        EditPlaylistViewModel(get(), get(), get())
     }
 }

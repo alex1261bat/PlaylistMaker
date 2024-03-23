@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackCardBinding
 import com.example.playlistmaker.domain.model.Track
-import kotlin.reflect.KFunction1
 
-class TrackAdapter(private val clickTrack: KFunction1<Track, Unit>
+class TrackAdapter(
+    private val clickTrack: (track: Track) -> Unit,
+    private val longClickTrack: ((trackId: String) -> Unit)? = null
 ): RecyclerView.Adapter<TrackViewHolder> () {
     private var trackList = emptyList<Track>()
 
@@ -20,7 +21,13 @@ class TrackAdapter(private val clickTrack: KFunction1<Track, Unit>
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = trackList[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener { clickTrack(item) }
+        holder.itemView.apply {
+            setOnClickListener { clickTrack(item) }
+            setOnLongClickListener {
+                longClickTrack?.let { onLongClick -> onLongClick(item.trackId) }
+                true
+            }
+        }
     }
 
     override fun getItemCount(): Int = trackList.size

@@ -17,7 +17,12 @@ class PlaylistRepositoryImpl(
             .addPlaylist(playlistMakerDbConverter.mapToPlaylistEntity(playlist))
     }
 
-    override suspend fun updatePlaylist(playlist: Playlist, track: Track) {
+    override fun getPlaylists(): Flow<List<Playlist>> =
+        playlistMakerDb.playlistDao().getPlaylists().map {
+        it.map { entity -> playlistMakerDbConverter.mapToPlaylist(entity) }
+    }
+
+    override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track) {
         val newPlaylist = playlist.copy(
             tracksIds = playlist.tracksIds + track.trackId,
             tracksCount = playlist.tracksCount + 1
@@ -29,8 +34,28 @@ class PlaylistRepositoryImpl(
             playlistMakerDbConverter.mapToPlaylistTracksEntity(track))
     }
 
-    override fun getPlaylists(): Flow<List<Playlist>> =
-        playlistMakerDb.playlistDao().getPlaylists().map {
-        it.map { entity -> playlistMakerDbConverter.mapToPlaylist(entity) }
+    override fun getPlaylistById(playlistId: String): Flow<Playlist?> {
+        return playlistMakerDb.playlistDao().getPlaylistById(playlistId).map {
+                entity -> entity?.let { playlistMakerDbConverter.mapToPlaylist(it) } }
+    }
+
+    override fun getPlaylistTracks(tracksIds: List<String>): Flow<List<Track>> {
+        return playlistMakerDb.playlistTracksDao().getPlaylistTracks(tracksIds).map { entities ->
+            entities
+                .sortedByDescending { it.createdAt }
+                .map { it.let { playlistMakerDbConverter.mapToTrackFromPlaylistTracksEntity(it) } }
+        }
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        playlistMakerDb.playlistDao().updatePlaylist(
+            playlistMakerDbConverter.mapToPlaylistEntity(playlist)
+        )
+    }
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        playlistMakerDb.playlistDao().deletePlaylist(
+            playlistMakerDbConverter.mapToPlaylistEntity(playlist)
+        )
     }
 }

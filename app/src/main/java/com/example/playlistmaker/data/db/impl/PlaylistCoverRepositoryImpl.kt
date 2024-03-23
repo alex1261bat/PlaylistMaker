@@ -27,7 +27,8 @@ class PlaylistCoverRepositoryImpl(private val context: Context) : PlaylistCoverR
             filePath.mkdirs()
         }
 
-        val file = File(filePath, "$FILE_NAME$playlistId$FILE_EXTENSION")
+        val file = File(filePath,
+            "$FILE_NAME${playlistId}_${System.currentTimeMillis()}$FILE_EXTENSION")
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = withContext(Dispatchers.IO) {
             FileOutputStream(file)
