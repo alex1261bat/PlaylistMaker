@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -72,11 +71,9 @@ class PlaylistDataViewModel(
         playlist.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 playlistInteractor.deletePlaylist(it)
-                withContext(Dispatchers.Main) {
-                    navigateBack()
-                }
             }
         }
+        navigateBack()
     }
 
     fun trackClick(track: Track) {
